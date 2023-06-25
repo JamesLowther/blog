@@ -2,6 +2,8 @@
 
 The goal of this project was simple - create a visualization to display the current position of the ISS in real-time. This was my first major attempt to create a display to be used on my new 64x32 RGB matrix from Adafruit.
 
+![[../iss-visualization.png]]
+
 ![[../Files/matrix.jpg]]
 
 The red dot on the image above represents the ISS and the green dot shows my current location. Displayed on the left there is time, ISS latitude, ISS longitude, and the number of astronauts on board (one coloured square for each).
