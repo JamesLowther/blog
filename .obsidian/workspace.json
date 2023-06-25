@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md",
+                "file": "Projects/LED Matrix - ISS Tracker.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md",
+                "file": "Projects/LED Matrix - ISS Tracker.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md",
+                "file": "Projects/LED Matrix - ISS Tracker.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md"
+                "file": "Projects/LED Matrix - ISS Tracker.md"
               }
             }
           }
@@ -146,9 +146,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "af6b4d4c4fd36fa6",
+  "active": "1d9f12f2db473e13",
   "lastOpenFiles": [
+    "images/matrix.jpg.md",
+    "Projects/LED Matrix - ISS Tracker.md",
+    "Files/iss-visualization.gif",
+    "Files/spinning-simple-globe.gif",
+    "videos/spinning-simple-globe.gif.md",
+    "videos",
+    "Files/converted-map.png",
+    "Files/world-map.png",
+    "Files/simple-globe.png",
+    "Files/spherical.png",
+    "Files/raspberry-pi.jpg",
+    "Files/matrix.jpg",
+    "images",
     "Writeups/magpieCTF 2021.md",
+    "Projects",
     "Writeups",
     "Files"
   ]
