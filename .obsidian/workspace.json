@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md"
+                "file": "README.md"
               }
             }
           }
@@ -148,22 +148,37 @@
   },
   "active": "92b133dbeadf6b26",
   "lastOpenFiles": [
-    "iss-visualization.png",
-    "Projects/iss-visualization.png",
-    "Files/converted-map.png",
-    "Projects/LED Matrix - ISS Tracker.md",
-    "images/matrix.jpg.md",
-    "Files/iss-visualization.gif",
-    "Files/spinning-simple-globe.gif",
-    "videos/spinning-simple-globe.gif.md",
-    "videos",
-    "Files/world-map.png",
-    "Files/simple-globe.png",
-    "Files/spherical.png",
-    "Files/raspberry-pi.jpg",
-    "Files/matrix.jpg",
+    "Writeups/SECCON CTF 2021.md",
+    "Writeups/redpwnCTF 2021.md",
+    "Files/Pasted image 20230625151326.png",
+    "images/cool/login-message.png.md",
+    "images/cool",
+    "images/secure/login.png.md",
+    "images/secure",
+    "Writeups/Real World CTF 2022.md",
+    "images/inspect-me/requestbin.png.md",
+    "images/inspect-me",
     "images",
     "Writeups/magpieCTF 2021.md",
+    "Files/secure-login.png",
+    "Files/secure-login-inject.png",
+    "Files/login-inject.png",
+    "Files/secure-cyberchef.png",
+    "Files/cyberchef.png",
+    "Files/inspect-me-requestbin.png",
+    "Files/requestbin.png",
+    "Files/cool-login-message.png",
+    "Files/login-message.png",
+    "images/hack-into-skynet",
+    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "Writeups/ICC 2022.md",
+    "images/hack-into-skynet/login.png.md",
+    "images/amidst-us",
+    "images/amidst-us/login.png.md",
+    "Projects/LED Matrix - ISS Tracker.md",
+    "images/matrix.jpg.md",
+    "videos/spinning-simple-globe.gif.md",
+    "videos",
     "Projects",
     "Writeups",
     "Files"
