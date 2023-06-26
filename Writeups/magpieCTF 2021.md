@@ -1,4 +1,4 @@
-### 2021-02-19
+## 2021-02-19
 
 I was an organizer for this CTF so the following writeups are for challenges that I developed. The full repository with all of the challenges can be found [here](https://github.com/infosec-ucalgary/magpieCTF-2021).
 

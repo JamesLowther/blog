@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Writeups/Real World CTF 2022.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Writeups/Real World CTF 2022.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Writeups/Real World CTF 2022.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Writeups/Real World CTF 2022.md"
+                "file": "README.md"
               }
             }
           }
@@ -148,13 +148,16 @@
   },
   "active": "92b133dbeadf6b26",
   "lastOpenFiles": [
-    "Writeups/ICC 2022.md",
+    "Files/Pasted image 20230625182620.png",
+    "Files/Pasted image 20230625182306.png",
+    "Projects/LED Matrix - ISS Tracker.md",
+    "README.md",
     "Writeups/magpieCTF 2021.md",
+    "Writeups/ICC 2022.md",
     "Writeups/Real World CTF 2022.md",
     "Writeups/SECCON CTF 2021.md",
     "Writeups/redpwnCTF 2021.md",
     "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
-    "README.md",
     "Files/Pasted image 20230625151326.png",
     "images/cool/login-message.png.md",
     "images/cool",
@@ -171,12 +174,10 @@
     "Files/inspect-me-requestbin.png",
     "Files/requestbin.png",
     "Files/cool-login-message.png",
-    "Files/login-message.png",
     "images/hack-into-skynet",
     "images/hack-into-skynet/login.png.md",
     "images/amidst-us",
     "images/amidst-us/login.png.md",
-    "Projects/LED Matrix - ISS Tracker.md",
     "images/matrix.jpg.md",
     "videos/spinning-simple-globe.gif.md",
     "videos",
