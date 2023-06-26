@@ -1,6 +1,8 @@
 ## 2021-09-14
+#project
 
-The goal of this project was simple - create a visualization to display the current position of the ISS in real-time. This was my first major attempt to create a display to be used on my new 64x32 RGB matrix from Adafruit.
+> [!Abstract]
+> The goal of this project was simple - create a visualization to display the current position of the ISS in real-time. This was my first major attempt to create a display to be used on my new 64x32 RGB matrix from Adafruit.
 
 
 ![[../Files/matrix.jpg]]
@@ -8,6 +10,7 @@ The goal of this project was simple - create a visualization to display the curr
 The red dot on the image above represents the ISS and the green dot shows my current location. Displayed on the left there is time, ISS latitude, ISS longitude, and the number of astronauts on board (one coloured square for each).
 
 The source code for this project can be found [here](https://github.com/JamesLowther/led-matrix).
+
 ***
 
 ## Parts
@@ -22,6 +25,7 @@ The following are the parts that I used to build this project. Most of them were
 ![[../Files/raspberry-pi.jpg]]
 
 ***
+
 ## The Spinning Globe
 To get this to work, I needed to brush up on my linear algebra skills. I used this [video](https://www.youtube.com/watch?v=7Q6yvpjvKVg) as a starting point for my code. It explains how to convert from a spherical coordinate system to a Cartesian coordinate system, initialize a numpy matrix to store the coordinates for the sphere, and how to apply a rotation matrix. The video describes how to use this to draw an ASCII Earth with pygame, but I managed to adapt it to work with the RGB matrix.
 
@@ -34,7 +38,10 @@ $$x=\sqrt{r\sin{\theta}\cos{\varphi}}$$
 $$y=\sqrt{r\cos{\theta}}$$
 $$z=\sqrt{r\sin{\theta}\sin{\varphi}}$$
 
-When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this. ***Note: I switched the equations for y and z to allow y to represent the vertical axis.***
+When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this. 
+
+> [!Note]
+> I switched the equations for y and z to allow y to represent the vertical axis.
 
 ![[../Files/spherical.png]]
 
@@ -219,6 +226,7 @@ def draw(self, image):
 ```
 
 ***
+
 ## Final result
 ![[../Files/iss-visualization.gif]]
 

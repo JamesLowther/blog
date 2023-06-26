@@ -1,4 +1,5 @@
 ## 2021-12-11
+#ctf-writeup 
 
 Link: https://ctf.seccon.jp/
 
@@ -9,11 +10,10 @@ Link: https://ctf.seccon.jp/
 
 ## Description
 How many vulnerabilities do you know?
-
 https://vulnerabilities.quals.seccon.jp
 
 ## Method
-The code is written in Go. This website also has two API Endpoints: a GET request to https://vulnerabilities.quals.seccon.jp/api/vulnerability will give you all the vulnerabilities in the datebase (except the flag), and a POST request to the same endpoint with the parameter `name=?` will give you the details about a specific vulnerability.
+The code is written in Go. This website also has two API Endpoints: a GET request to https://vulnerabilities.quals.seccon.jp/api/vulnerability will give you all the vulnerabilities in the database (except the flag), and a POST request to the same endpoint with the parameter `name=?` will give you the details about a specific vulnerability.
 
 There is a vulnerability in the database that corresponds to the name of the flag. Unfortunately the name is set as an environment variable, so it is hidden.
 

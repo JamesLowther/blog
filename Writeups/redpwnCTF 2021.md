@@ -1,4 +1,5 @@
 ## 2021-07-09
+#ctf-writeup 
 
 Link: https://ctf.redpwn.net/
 
@@ -12,7 +13,7 @@ Link: https://ctf.redpwn.net/
 Ah, the classic pastebin. Can you get the admin's cookies?
 
 ## Solution
-For this challenge, we are given two links. One is a mock pastebin website where you can enter text, submit it, and be given a link to where it persists. The second link is a website that allows you to redirect a bot to a specific url.
+For this challenge, we are given two links. One is a mock pastebin website where you can enter text, submit it, and be given a link to where it persists. The second link is a website that allows you to redirect a bot to a specific URL.
 
 Based on the nature of the websites and the description it's fairly clear that this is a classic XXS challenge. The mock pastebin website allows JavaScript that we write to be injected into the DOM of whoever visits the page. We can exploit this to steal a person's cookie. First, I created a public [RequestBin](https://requestbin.com/) as an endpoint for our exploit. Then I created a new paste with the following content:
 

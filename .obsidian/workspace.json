@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md",
+                "file": "Writeups/ICC 2022.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md",
+                "file": "Writeups/ICC 2022.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md",
+                "file": "Writeups/ICC 2022.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Projects/LED Matrix - ISS Tracker.md"
+                "file": "Writeups/ICC 2022.md"
               }
             }
           }
@@ -134,7 +134,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 326.5
+    "width": 326.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -148,14 +149,20 @@
   },
   "active": "97ff2cc9b78d428d",
   "lastOpenFiles": [
-    "Writeups/Real World CTF 2022.md",
-    "Writeups/redpwnCTF 2021.md",
     "Writeups/magpieCTF 2021.md",
+    "Writeups/Real World CTF 2022.md",
     "Writeups/ICC 2022.md",
-    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
-    "Writeups/SECCON CTF 2021.md",
+    "Writeups/redpwnCTF 2021.md",
     "README.md",
+    "Guides/Python __code__ Attribute Overwrite.md",
+    "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+    "Guides/Enumeration Techniques.md",
+    "Guides/Privilege Escalation Techniques.md",
     "Projects/LED Matrix - ISS Tracker.md",
+    "Writeups/SECCON CTF 2021.md",
+    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "Guides",
+    "Guides",
     "Files/Pasted image 20230625182620.png",
     "Files/Pasted image 20230625182306.png",
     "Files/Pasted image 20230625151326.png",
@@ -180,8 +187,6 @@
     "images/matrix.jpg.md",
     "videos/spinning-simple-globe.gif.md",
     "videos",
-    "Projects",
-    "Writeups",
-    "Files"
+    "Projects"
   ]
 }
