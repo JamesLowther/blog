@@ -1,4 +1,4 @@
-## 2021-02-19
+*2021-02-19*
 #ctf-writeup 
 
 > [!Abstract]
@@ -7,8 +7,8 @@
 ***
 
 # Man-in-the-Mirror
-### Category: Networks
-### Author: James Lowther (Articuler)
+**Category: Networks**
+**Author: James Lowther (Articuler)**
 
 ## Description
 And no message could have been any clearer...
@@ -100,8 +100,8 @@ main()
 ***
 
 # Birdbuster Video
-### Category: Web Exploitation
-### Author: James Lowther (Articuler)
+**Category: Web Exploitation**
+**Author: James Lowther (Articuler)**
 
 ## Description
 Weren't video rental stores the best?! See if you can break into this one!
@@ -123,8 +123,8 @@ This challenge gives provides you a website with the ability to upload a barcode
 ***
 
 # Richard Simmons: Sweatin' in LaTeX
-### Category: Web Exploitation
-### Author: James Lowther (Articuler)
+**Category: Web Exploitation**
+**Author: James Lowther (Articuler)**
 
 ## Description
 Richard Simmons' new workout "Sweatin' in LaTeX" is out now! See if you can shimmy your way to the flag!
@@ -180,8 +180,8 @@ The flag can be found in the returned LOG data.
 ***
 
 # The Smurfs Cipher
-### Category: Web Exploitation
-### Author: James Lowther (Articuler)
+**Category: Web Exploitation**
+**Author: James Lowther (Articuler)**
 
 ## Description
 Gargamel stole the key to decrypt The Smurfs ciphertext. Now they can't get into their kingdom to view their flag. Can you help them get the right key?
@@ -202,8 +202,8 @@ A table showing all of the PHP loose comparison values can be found [here](https
 ***
 
 # DynaTAC 8000x Keylogger
-### Category: Forensics
-### Author: James Lowther (Articuler)
+**Category: Forensics**
+**Author: James Lowther (Articuler)**
 
 ## Description
 The DynaTAC 8000X, released in 1983, was the first consumer cellphone ever sold. Somebody recently modified it to support texting and added a keylogger! Can you find out what message was sent? Note: wrap extracted data in magpie{}
