@@ -80,11 +80,11 @@
         "level": 2
       },
       {
-        "heading": "Request Normally",
+        "heading": "Request normally",
         "level": 3
       },
       {
-        "heading": "Request with Intercept Proxy",
+        "heading": "Request with intercept proxy",
         "level": 3
       },
       {
@@ -197,7 +197,7 @@
         "level": 2
       },
       {
-        "heading": "Solve Script",
+        "heading": "Solve script",
         "level": 2
       },
       {
@@ -263,7 +263,7 @@
         "level": 2
       },
       {
-        "heading": "Solve Script",
+        "heading": "Solve script",
         "level": 2
       },
       {
@@ -458,11 +458,11 @@
         "level": 2
       },
       {
-        "heading": "Failed Exploit",
+        "heading": "Failed exploit",
         "level": 4
       },
       {
-        "heading": "Working Exploit",
+        "heading": "Working exploit",
         "level": 4
       },
       {
@@ -506,6 +506,14 @@
       {
         "heading": "Nmap",
         "level": 2
+      },
+      {
+        "heading": "Initial scan",
+        "level": 3
+      },
+      {
+        "heading": "Full scan",
+        "level": 3
       },
       {
         "heading": "Gobuster",
