@@ -135,7 +135,7 @@ Posting with the following JSON will retrieve the flag:
 {"Logo":"/images/SECCON{LE4RNING_FR0M_7HE_PA5T_FINDIN6_N0TABLE_VULNERABILITIE5}.png","URL":"seccon://SECCON{LE4RNING_FR0M_7HE_PA5T_FINDIN6_N0TABLE_VULNERABILITIE5}"}
 ```
 
-## Solve Script
+## Solve script
 ```python
 import requests
 

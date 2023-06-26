@@ -43,7 +43,7 @@ We can use this property to escalate to a namespace with more functions availabl
 > [!Note]
 > Notice that the globals available to use in the `exec()` function have been limited. In this case, only `print()` can be called.
 
-#### Failed Exploit
+#### Failed exploit
 ```python
 import os 
 
@@ -72,7 +72,7 @@ We get the error that the `os` module is not defined, which make sense since it'
 
 Now, lets try the same code with a different injection. This time we're going to overwrite the `__code__` attribute of `print` with that of a custom lambda. We'll then run `print()`.
 
-#### Working Exploit
+#### Working exploit
 ```python
 import os 
 

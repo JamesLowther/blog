@@ -24,7 +24,7 @@ This challenge provides a website and a proxy. Going to the website without goin
 2. To do this, write your own intercept proxy in a language like Python 3 which forwards all requests to the website and prints out the returned HTML.
 3. Next, send a request to your intercept proxy using the given proxy. By forwarding the proxy's request through the intercept proxy you will be able to look at the returned HTML while still using the proxy's authentication credentials. The flag will be in the body of this request.
 
-### Request Normally
+### Request normally
 
 ```
 +----------+   Request   +-----------+   Auth Key   +-------------+
@@ -35,7 +35,7 @@ This challenge provides a website and a proxy. Going to the website without goin
                  Flag
 ```
 
-### Request with Intercept Proxy
+### Request with intercept proxy
 
 ```
 +----------+   Request   +-----------+  Auth Key   +---------------+  Auth Key   +-------------+

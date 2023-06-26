@@ -8,10 +8,10 @@
 ---
 
 ## Nmap
-**Initial Scan**
+### Initial scan
 `nmap -vv -sV -sC -oN initial <ip>`
 
-**Full Scan**
+### Full scan
 `nmap -vv -sV -sC -p- -A -oN full <ip>`
 
 ## Gobuster
