@@ -1,6 +1,6 @@
 # James Lowther - Blog
 
-Go back to my profile page at https://www.jameslowther.com
+Go back to the home page at [www.jameslowther.com](https://www.jameslowther.com)
 
 ---
 
@@ -8,7 +8,7 @@ Go back to my profile page at https://www.jameslowther.com
 
 My name is James Lowther and welcome to my blog!
 
-This is a space where I'll post interesting technical projects I'm working on, writeups from security competitions, and any other general musings.
+This is a space where I'll post interesting technical projects I'm working on, write-ups from security competitions, and any other general musings.
 
 To get you started, here's a cool post: [[Projects/LED Matrix - ISS Tracker|LED Matrix - ISS Tracker]]
 
