@@ -11,8 +11,13 @@
             "id": "97ff2cc9b78d428d",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Writeups/ICC 2022.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Writeups/ICC 2022.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Writeups/ICC 2022.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +125,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Writeups/ICC 2022.md"
+              }
             }
           }
         ]
@@ -139,16 +148,16 @@
   },
   "active": "97ff2cc9b78d428d",
   "lastOpenFiles": [
-    "Projects/LED Matrix - ISS Tracker.md",
-    "README.md",
-    "Files/Pasted image 20230625182620.png",
-    "Files/Pasted image 20230625182306.png",
-    "Writeups/magpieCTF 2021.md",
-    "Writeups/ICC 2022.md",
-    "Writeups/Real World CTF 2022.md",
     "Writeups/SECCON CTF 2021.md",
     "Writeups/redpwnCTF 2021.md",
+    "Writeups/Real World CTF 2022.md",
+    "Writeups/magpieCTF 2021.md",
+    "Writeups/ICC 2022.md",
     "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "README.md",
+    "Projects/LED Matrix - ISS Tracker.md",
+    "Files/Pasted image 20230625182620.png",
+    "Files/Pasted image 20230625182306.png",
     "Files/Pasted image 20230625151326.png",
     "images/cool/login-message.png.md",
     "images/cool",
