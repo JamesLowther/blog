@@ -30,13 +30,9 @@ First, for each latitude (north/south) I iterated over a number of longitudes (e
 
 Converting from spherical to Cartesian coordinates is done using the following equations:
 
-$$
-\begin{align*}
-    x=&\sqrt{r\sin{\theta}\cos{\varphi}} \\
-    y=&\sqrt{r\cos{\theta}} \\
-    z=&\sqrt{r\sin{\theta}\sin{\varphi}}
-\end{align*}
-$$
+$$x=\sqrt{r\sin{\theta}\cos{\varphi}}$$
+$$y=\sqrt{r\cos{\theta}}$$
+$$z=\sqrt{r\sin{\theta}\sin{\varphi}}$$
 
 When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this. ***Note: I switched the equations for y and z to allow y to represent the vertical axis.***
 
