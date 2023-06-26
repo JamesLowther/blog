@@ -9,6 +9,10 @@
       "relativePath": "Files"
     },
     {
+      "name": "Guides",
+      "relativePath": "Guides"
+    },
+    {
       "name": "Projects",
       "relativePath": "Projects"
     },
@@ -18,6 +22,11 @@
     }
   ],
   "nonMdFiles": [
+    {
+      "name": "update-blog.sh",
+      "basename": "update-blog",
+      "relativePath": "update-blog.sh"
+    },
     {
       "name": "Pasted image 20230625182620.png",
       "basename": "Pasted image 20230625182620",

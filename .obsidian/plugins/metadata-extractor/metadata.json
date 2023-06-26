@@ -458,6 +458,9 @@
   {
     "fileName": "LED Matrix - ISS Tracker",
     "relativePath": "Projects/LED Matrix - ISS Tracker.md",
+    "tags": [
+      "project"
+    ],
     "headings": [
       {
         "heading": "2021-09-14",
