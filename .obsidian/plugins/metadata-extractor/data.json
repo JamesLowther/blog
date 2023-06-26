@@ -8,6 +8,6 @@
   "allExceptMdFile": "allExceptMd.json",
   "canvasFile": "canvas.json",
   "writingFrequency": "0",
-  "writeFilesOnLaunch": true,
+  "writeFilesOnLaunch": false,
   "consoleLog": false
 }

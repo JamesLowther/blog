@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md",
+                "file": "README.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Writeups/magpieCTF 2021.md"
+                "file": "README.md"
               }
             }
           }
@@ -149,6 +149,7 @@
   },
   "active": "97ff2cc9b78d428d",
   "lastOpenFiles": [
+    "Writeups/magpieCTF 2021.md",
     "Guides/Enumeration Techniques.md",
     "Guides/Python __code__ Attribute Overwrite.md",
     "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
@@ -158,7 +159,6 @@
     "README.md",
     "Writeups/SECCON CTF 2021.md",
     "Writeups/Real World CTF 2022.md",
-    "Writeups/magpieCTF 2021.md",
     "Writeups/ICC 2022.md",
     "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
     "Guides",
