@@ -1,4 +1,5 @@
 ## 2022-01-22
+#ctf-writeup 
 
 Link: https://realworldctf.com/
 
@@ -61,7 +62,9 @@ def query_kill_time():
 This `query_kill_time()` function is only called if we have a valid `SessionId` cookie, something we can only get by logging in. Therefore, we need to somehow log in before we can do any sort of injection.
 
 ## Logging in
-Upon closer inspection of the `query_login_attempt()` function we see that its login logic is sort of backward. It first queries for the password in the database, then checks if the username given by the user matches the username associated with the result of the query. If we send a random, invalid, password along with an empty username, the SQL query will return an empty username from the database. This empty username will match with our empty username and we will "log in". This provides us with a `SessionId` that we can use to start querying the `query_kill_time()` function.
+Upon closer inspection of the `query_login_attempt()` function we see that its login logic is sort of backward. It first queries for the password in the database, then checks if the username given by the user matches the username associated with the result of the query. 
+
+If we send a random, invalid, password along with an empty username, the SQL query will return an empty username from the database. This empty username will match with our empty username and we will "log in". This provides us with a `SessionId` that we can use to start querying the `query_kill_time()` function.
 
 The following curl command illustrates this:
 ```bash
@@ -99,7 +102,6 @@ Login success
 We can now use the `SessionId` cookie of `a706967504e8247d98ad7e583a11e002` in our future requests.
 
 ## SQL Injecting
-
 Now that we have a `SessionId` cookie we can access the vulnerable SQL query. We can inject using the `name` key from the form data of a POST request. The problem is the `skynet_detect()` function seems to do some sort of injection filtering, blocking more obvious injections.
 
 It seemed by sending the POST request form in the `multipart/form-data` format seemed to bring better results. The following curl was our first PoC of a working injection:

@@ -1,4 +1,5 @@
 ## 2021-09-14
+#project
 
 The goal of this project was simple - create a visualization to display the current position of the ISS in real-time. This was my first major attempt to create a display to be used on my new 64x32 RGB matrix from Adafruit.
 
@@ -34,7 +35,10 @@ $$x=\sqrt{r\sin{\theta}\cos{\varphi}}$$
 $$y=\sqrt{r\cos{\theta}}$$
 $$z=\sqrt{r\sin{\theta}\sin{\varphi}}$$
 
-When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this. ***Note: I switched the equations for y and z to allow y to represent the vertical axis.***
+When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this. 
+
+> [!Note]
+> I switched the equations for y and z to allow y to represent the vertical axis.
 
 ![[../Files/spherical.png]]
 

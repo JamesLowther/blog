@@ -1,4 +1,6 @@
 ## 2022-05-15
+#ctf-writeup
+
 ***
 
 # Acnologia Portal
@@ -17,7 +19,7 @@ I created an account, and after logging in was given a list of firmware and the 
 ![[../Files/login.png]]
 ![[../Files/firmware-list.png]]
 
-Looking at `routes.py` I could see that after posting a firmware report, a function called `visit_report()` is called. This function launches a selenium driver in `bot.py` that visits the report review page using a bot with administrative credentials. This immediately indicates an XXS injection.
+Looking at `routes.py` I could see that after posting a firmware report, a function `visit_report()` is called. This function launches a selenium driver in `bot.py` that visits the report review page using a bot with administrative credentials. This immediately indicates an XXS injection.
 
 ```python
 # routes.py
@@ -92,11 +94,11 @@ def firmware_update():
 ```
 
 `extract_firmware()` does the following:
-* Copies a tar.gz file to the `/tmp` directory
-* Extracts the tar.gz
-* Copies the extracted files to a randomly-generated directory in `static/firmware_extract`
+* Copies a tar.gz file to the `/tmp` directory.
+* Extracts the tar.gz,
+* Copies the extracted files to a randomly-generated directory in `static/firmware_extract`.
 
-This sounds like it would be a zip slip. Something interesting is that tar.gz files allow you to tar existing symlinks and have them maintain their link when untarred on a different system. If we tar a file that is symlinked to `/flag.txt`, we can zip slip this file into the static folder on the challenge instance (which is publically accessible) and then read it from there.
+This sounds like a zip slip. Something interesting is that tar.gz files allow you to tar existing symlinks and have them maintain their link when untarred on a different system. If we tar a file that is symlinked to `/flag.txt`, we can zip slip this file into the static folder on the challenge instance (which is publically accessible) and then read it from there.
 
 I used a tool called [evilarc](https://github.com/ptoomey3/evilarc) to generate the zip slip tar.gz file with the following command:
 
@@ -182,7 +184,6 @@ main()
 ```
 
 ## Flag
-```
-HTB{des3r1aliz3_4ll_th3_th1ngs}
-```
+`HTB{des3r1aliz3_4ll_th3_th1ngs}`
+
 ***
