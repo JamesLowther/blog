@@ -11,11 +11,11 @@
 Bonnie has confirmed the location of the Acnologia spacecraft operated by the Golden Fang mercenary. Before taking over the spaceship, we need to disable its security measures. Ulysses discovered an accessible firmware management portal for the spacecraft. Can you help him get in?
 
 ## Initial thoughts
-For this challenge, we're given an endpoint to the "Acnologia Firmware Portal", which is just a login screen, as well as a zip file containing the source code. The code looks to be written using the Flask framework.
+For this challenge, we're given an endpoint to the "Acnologia Firmware Portal", which is just a login screen as well as a zip file containing the source code. The code looks to be written using the Flask framework.
 
 In `routes.py` we can see all the endpoints available to us. Many of the endpoints are publicly available, but some require you to be logged in, be an administrator, or some combination of the two.
 
-I created an account, and after logging in was given a list of firmware and the ability to report a bug on each.
+I created an account, and after logging in was given a list of firmware and the ability to report bugs.
 
 ![[../Files/login.png]]
 ![[../Files/firmware-list.png]]
@@ -42,15 +42,13 @@ def report_issue():
     db.session.add(new_report)
     db.session.commit()
 
-    # highlight-start
     visit_report()
-    # highlight-end
     migrate_db()
 
     return response('Issue reported successfully!')
 ```
 
-If we look at the Jinja2 template for the review page, we confirm our XXS theory. The `{{ report.issue | safe }}` directive tells Jinja2 not to sanitize the value of `report.issue`. We can control the value of `report.issue` when we submit a report, allowing us to XXS the admin bot.
+If we look at the Jinja2 template for the review page, we confirm our XXS theory. The `{{ report.issue | safe }}` directive tells Jinja2 not to sanitize the value of `report.issue`. We can control the value of `report.issue` when we submit a report, allowing us to craft an XXS against the admin bot.
 
 ```python
 # review.html
@@ -61,9 +59,7 @@ If we look at the Jinja2 template for the review page, we confirm our XXS theory
         </div>
         <div class="card-body">
         <p class="card-title">Module ID : {{ report.module_id }}</p>
-          # highlight-start
           <p class="card-text">Issue : {{ report.issue | safe }} </p>
-          # highlight-end
           <a href="#" class="btn btn-primary">Reply</a>
           <a href="#" class="btn btn-danger">Delete</a>
         </div>
@@ -96,10 +92,10 @@ def firmware_update():
 
 `extract_firmware()` does the following:
 * Copies a tar.gz file to the `/tmp` directory.
-* Extracts the tar.gz,
+* Extracts the tar.gz.
 * Copies the extracted files to a randomly-generated directory in `static/firmware_extract`.
 
-This sounds like a zip slip. Something interesting is that tar.gz files allow you to tar existing symlinks and have them maintain their link when untarred on a different system. If we tar a file that is symlinked to `/flag.txt`, we can zip slip this file into the static folder on the challenge instance (which is publically accessible) and then read it from there.
+This sounds like a zip slip. Something interesting is that tar.gz files allow you to tar existing symlinks and have them maintain their link when untarred on a different system. If we tar a file that is symlinked to `/flag.txt`, we can zip slip this file into the static folder on the challenge instance (which is publicly accessible) and then read it from there.
 
 I used a tool called [evilarc](https://github.com/ptoomey3/evilarc) to generate the zip slip tar.gz file with the following command:
 
@@ -137,7 +133,7 @@ Once the bot visits the review page, it will use its admin credentials to upload
 We can then navigate to the endpoint `/static/firmware_extract/symlink` and `flag.txt` will be downloaded onto our computer.
 
 ## Final script
-I wrote this Python 3 script that does all the steps.
+I wrote this Python 3 script that does all the steps:
 
 ```python
 import requests
