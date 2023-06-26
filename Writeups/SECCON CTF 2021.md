@@ -78,7 +78,7 @@ print(resp.text)
 
 ```
 
-The problem is that the Go code checks for fields being blank, or nil, through the following lines:
+The problem is that the Go code checks for fields being either blank or nil through the following lines:
 
 ```go
 if name, ok := json["Name"]; !ok || name == "" || name == nil {
