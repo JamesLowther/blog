@@ -1,4 +1,4 @@
-## 2021-07-09
+*2021-07-09*
 #ctf-writeup 
 
 Link: https://ctf.redpwn.net/
@@ -6,8 +6,8 @@ Link: https://ctf.redpwn.net/
 ***
 
 # pastebin-1
-### Category: web
-### Author: BrownieInMotion
+**Category: web**
+**Author: BrownieInMotion**
 
 ## Description
 Ah, the classic pastebin. Can you get the admin's cookies?
@@ -34,8 +34,8 @@ When the admin bot visits our link the JavaScript within the `<script>` tag gets
 ***
 
 # secure
-### Category: web
-### Author: BrownieInMotion
+**Category: web**
+**Author: BrownieInMotion**
 
 ## Description
 Just learned about encryption—now, my website is unhackable!
@@ -129,8 +129,8 @@ We can then use a tool like [CyberChef](https://gchq.github.io/CyberChef/) to ea
 ***
 
 # cool
-### Category: web
-### Author: Arinerron & BrownieInMotion
+**Category: web**
+**Author: Arinerron & BrownieInMotion**
 
 ## Description
 Aaron has a message for the cool kids. For support, DM BrownieInMotion.
