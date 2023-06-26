@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Writeups/redpwnCTF 2021.md",
+                "file": "Writeups/magpieCTF 2021.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Writeups/redpwnCTF 2021.md",
+                "file": "Writeups/magpieCTF 2021.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Writeups/redpwnCTF 2021.md",
+                "file": "Writeups/magpieCTF 2021.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,16 +126,16 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Writeups/redpwnCTF 2021.md"
+                "file": "Writeups/magpieCTF 2021.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 326.5,
-    "collapsed": true
+    "width": 326.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -149,18 +149,18 @@
   },
   "active": "97ff2cc9b78d428d",
   "lastOpenFiles": [
+    "Guides/Enumeration Techniques.md",
+    "Guides/Python __code__ Attribute Overwrite.md",
+    "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+    "Guides/Privilege Escalation Techniques.md",
+    "Projects/LED Matrix - ISS Tracker.md",
+    "Writeups/redpwnCTF 2021.md",
+    "README.md",
     "Writeups/SECCON CTF 2021.md",
     "Writeups/Real World CTF 2022.md",
     "Writeups/magpieCTF 2021.md",
     "Writeups/ICC 2022.md",
-    "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
-    "Guides/Python __code__ Attribute Overwrite.md",
-    "Guides/Privilege Escalation Techniques.md",
-    "Projects/LED Matrix - ISS Tracker.md",
-    "Writeups/redpwnCTF 2021.md",
     "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
-    "Guides/Enumeration Techniques.md",
-    "README.md",
     "Guides",
     "Guides",
     "Files/Pasted image 20230625182620.png",
