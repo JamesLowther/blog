@@ -2,9 +2,10 @@
   "obsidian-git:push": [
     {
       "modifiers": [
-        "Mod"
+        "Mod",
+        "Shift"
       ],
-      "key": "M"
+      "key": "S"
     }
   ]
 }

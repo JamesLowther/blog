@@ -2,6 +2,9 @@
   {
     "fileName": "redpwnCTF 2021",
     "relativePath": "Writeups/redpwnCTF 2021.md",
+    "tags": [
+      "ctf-writeup"
+    ],
     "headings": [
       {
         "heading": "2021-07-09",
@@ -84,6 +87,9 @@
   {
     "fileName": "magpieCTF 2021",
     "relativePath": "Writeups/magpieCTF 2021.md",
+    "tags": [
+      "ctf-writeup"
+    ],
     "headings": [
       {
         "heading": "2021-02-19",
@@ -234,6 +240,9 @@
   {
     "fileName": "SECCON CTF 2021",
     "relativePath": "Writeups/SECCON CTF 2021.md",
+    "tags": [
+      "ctf-writeup"
+    ],
     "headings": [
       {
         "heading": "2021-12-11",
@@ -280,6 +289,9 @@
   {
     "fileName": "Real World CTF 2022",
     "relativePath": "Writeups/Real World CTF 2022.md",
+    "tags": [
+      "ctf-writeup"
+    ],
     "headings": [
       {
         "heading": "2022-01-22",
@@ -318,6 +330,9 @@
   {
     "fileName": "ICC 2022",
     "relativePath": "Writeups/ICC 2022.md",
+    "tags": [
+      "ctf-writeup"
+    ],
     "headings": [
       {
         "heading": "2022-06-14",
@@ -372,10 +387,6 @@
         "level": 2
       },
       {
-        "heading": "`CTF{50d1f7f8cb5de765cc0e910a908ba4822a085ef8491d1fee}`",
-        "level": 2
-      },
-      {
         "heading": "Insane in the Membrain",
         "level": 1
       },
@@ -400,6 +411,9 @@
   {
     "fileName": "Cyber Apocalypse CTF 2022 - Intergalactic Chase",
     "relativePath": "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "tags": [
+      "ctf-writeup"
+    ],
     "headings": [
       {
         "heading": "2022-05-15",
@@ -444,7 +458,7 @@
     "relativePath": "README.md",
     "headings": [
       {
-        "heading": "James Lowther - Blog",
+        "heading": "Blog - James Lowther",
         "level": 1
       }
     ],
@@ -504,6 +518,126 @@
         "fileName": "README",
         "link": "LED Matrix - ISS Tracker",
         "relativePath": "README.md"
+      }
+    ]
+  },
+  {
+    "fileName": "XFCE Docked Laptop Lid Switch Suppression",
+    "relativePath": "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+    "tags": [
+      "guide"
+    ],
+    "headings": [
+      {
+        "heading": "2023-06-15",
+        "level": 2
+      },
+      {
+        "heading": "Disable UPower",
+        "level": 2
+      },
+      {
+        "heading": "Disable xfce4-power-manager",
+        "level": 2
+      },
+      {
+        "heading": "Configure systemd-logind",
+        "level": 2
+      },
+      {
+        "heading": "Final steps",
+        "level": 2
+      },
+      {
+        "heading": "References",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "fileName": "Python __code__ Attribute Overwrite",
+    "relativePath": "Guides/Python __code__ Attribute Overwrite.md",
+    "tags": [
+      "guide"
+    ],
+    "headings": [
+      {
+        "heading": "2022-05-15",
+        "level": 2
+      },
+      {
+        "heading": "Example",
+        "level": 2
+      },
+      {
+        "heading": "Namespace Escalation",
+        "level": 2
+      },
+      {
+        "heading": "Failed Exploit",
+        "level": 4
+      },
+      {
+        "heading": "Working Exploit",
+        "level": 4
+      },
+      {
+        "heading": "References",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "fileName": "Privilege Escalation Techniques",
+    "relativePath": "Guides/Privilege Escalation Techniques.md",
+    "tags": [
+      "guide"
+    ],
+    "headings": [
+      {
+        "heading": "2022-04-12",
+        "level": 2
+      },
+      {
+        "heading": "SUID bit escalation",
+        "level": 2
+      },
+      {
+        "heading": "File ownership",
+        "level": 2
+      },
+      {
+        "heading": "Pspy64",
+        "level": 2
+      },
+      {
+        "heading": "References",
+        "level": 1
+      }
+    ]
+  },
+  {
+    "fileName": "Enumeration Techniques",
+    "relativePath": "Guides/Enumeration Techniques.md",
+    "tags": [
+      "guide"
+    ],
+    "headings": [
+      {
+        "heading": "2022-04-15",
+        "level": 2
+      },
+      {
+        "heading": "Nmap",
+        "level": 2
+      },
+      {
+        "heading": "Gobuster",
+        "level": 2
+      },
+      {
+        "heading": "References",
+        "level": 1
       }
     ]
   }
