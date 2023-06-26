@@ -16,9 +16,9 @@ https://vulnerabilities.quals.seccon.jp
 ## Method
 The code is written in Go. This website also has two API Endpoints: a GET request to https://vulnerabilities.quals.seccon.jp/api/vulnerability will give you all the vulnerabilities in the database (except the flag), and a POST request to the same endpoint with the parameter `name=?` will give you the details about a specific vulnerability.
 
-There is a vulnerability in the database that corresponds to the name of the flag. Unfortunately the name is set as an environment variable, so it is hidden.
+There is a vulnerability in the database that corresponds to the name of the flag. Unfortunately the name is set as an environment variable, so it is hidden to us.
 
-## Basic POST Script
+## Basic POST script
 This script makes a request to get information about the SGAxe vulnerability:
 
 ```python
@@ -40,7 +40,7 @@ It returns the following:
 {"Logo":"/images/sgaxe.png","URL":"https://cacheoutattack.com/"}
 ```
 
-## General Thoughts
+## General thoughts
 Since the description is: "How many vulnerabilities do you know?", there will likely be a vulnerability with Go, or possibly with Gin.
 
 https://security.snyk.io/vuln/SNYK-GOLANG-GITHUBCOMGINGONICGIN-550031

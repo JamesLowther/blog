@@ -7,20 +7,8 @@
     ],
     "headings": [
       {
-        "heading": "2021-07-09",
-        "level": 2
-      },
-      {
         "heading": "pastebin-1",
         "level": 1
-      },
-      {
-        "heading": "Category: web",
-        "level": 3
-      },
-      {
-        "heading": "Author: BrownieInMotion",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -39,14 +27,6 @@
         "level": 1
       },
       {
-        "heading": "Category: web",
-        "level": 3
-      },
-      {
-        "heading": "Author: BrownieInMotion",
-        "level": 3
-      },
-      {
         "heading": "Description",
         "level": 2
       },
@@ -61,14 +41,6 @@
       {
         "heading": "cool",
         "level": 1
-      },
-      {
-        "heading": "Category: web",
-        "level": 3
-      },
-      {
-        "heading": "Author: Arinerron & BrownieInMotion",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -92,20 +64,8 @@
     ],
     "headings": [
       {
-        "heading": "2021-02-19",
-        "level": 2
-      },
-      {
         "heading": "Man-in-the-Mirror",
         "level": 1
-      },
-      {
-        "heading": "Category: Networks",
-        "level": 3
-      },
-      {
-        "heading": "Author: James Lowther (Articuler)",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -136,14 +96,6 @@
         "level": 1
       },
       {
-        "heading": "Category: Web Exploitation",
-        "level": 3
-      },
-      {
-        "heading": "Author: James Lowther (Articuler)",
-        "level": 3
-      },
-      {
         "heading": "Description",
         "level": 2
       },
@@ -164,14 +116,6 @@
         "level": 1
       },
       {
-        "heading": "Category: Web Exploitation",
-        "level": 3
-      },
-      {
-        "heading": "Author: James Lowther (Articuler)",
-        "level": 3
-      },
-      {
         "heading": "Description",
         "level": 2
       },
@@ -188,14 +132,6 @@
         "level": 1
       },
       {
-        "heading": "Category: Web Exploitation",
-        "level": 3
-      },
-      {
-        "heading": "Author: James Lowther (Articuler)",
-        "level": 3
-      },
-      {
         "heading": "Description",
         "level": 2
       },
@@ -210,14 +146,6 @@
       {
         "heading": "DynaTAC 8000x Keylogger",
         "level": 1
-      },
-      {
-        "heading": "Category: Forensics",
-        "level": 3
-      },
-      {
-        "heading": "Author: James Lowther (Articuler)",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -245,16 +173,8 @@
     ],
     "headings": [
       {
-        "heading": "2021-12-11",
-        "level": 2
-      },
-      {
         "heading": "Vulnerability",
         "level": 1
-      },
-      {
-        "heading": "Category: web",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -294,16 +214,8 @@
     ],
     "headings": [
       {
-        "heading": "2022-01-22",
-        "level": 2
-      },
-      {
         "heading": "Hack into Skynet",
         "level": 1
-      },
-      {
-        "heading": "Category: web",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -335,16 +247,8 @@
     ],
     "headings": [
       {
-        "heading": "2022-06-14",
-        "level": 2
-      },
-      {
         "heading": "Web of 64",
         "level": 1
-      },
-      {
-        "heading": "Category: Web",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -416,16 +320,8 @@
     ],
     "headings": [
       {
-        "heading": "2022-05-15",
-        "level": 2
-      },
-      {
         "heading": "Acnologia Portal",
         "level": 1
-      },
-      {
-        "heading": "Category: Web",
-        "level": 3
       },
       {
         "heading": "Description",
@@ -477,10 +373,6 @@
     ],
     "headings": [
       {
-        "heading": "2021-09-14",
-        "level": 2
-      },
-      {
         "heading": "Parts",
         "level": 2
       },
@@ -529,10 +421,6 @@
     ],
     "headings": [
       {
-        "heading": "2023-06-15",
-        "level": 2
-      },
-      {
         "heading": "Disable UPower",
         "level": 2
       },
@@ -561,10 +449,6 @@
       "guide"
     ],
     "headings": [
-      {
-        "heading": "2022-05-15",
-        "level": 2
-      },
       {
         "heading": "Example",
         "level": 2
@@ -595,10 +479,6 @@
     ],
     "headings": [
       {
-        "heading": "2022-04-12",
-        "level": 2
-      },
-      {
         "heading": "SUID bit escalation",
         "level": 2
       },
@@ -623,10 +503,6 @@
       "guide"
     ],
     "headings": [
-      {
-        "heading": "2022-04-15",
-        "level": 2
-      },
       {
         "heading": "Nmap",
         "level": 2
