@@ -1,9 +1,31 @@
 [
   {
+    "tag": "ctf-writeup",
+    "tagCount": 6,
+    "relativePaths": [
+      "Writeups/redpwnCTF 2021.md",
+      "Writeups/magpieCTF 2021.md",
+      "Writeups/SECCON CTF 2021.md",
+      "Writeups/Real World CTF 2022.md",
+      "Writeups/ICC 2022.md",
+      "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md"
+    ]
+  },
+  {
     "tag": "project",
     "tagCount": 1,
     "relativePaths": [
       "Projects/LED Matrix - ISS Tracker.md"
+    ]
+  },
+  {
+    "tag": "guide",
+    "tagCount": 4,
+    "relativePaths": [
+      "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+      "Guides/Python __code__ Attribute Overwrite.md",
+      "Guides/Privilege Escalation Techniques.md",
+      "Guides/Enumeration Techniques.md"
     ]
   }
 ]
