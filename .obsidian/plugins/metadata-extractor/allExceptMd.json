@@ -1,0 +1,107 @@
+{
+  "folders": [
+    {
+      "name": "",
+      "relativePath": "/"
+    },
+    {
+      "name": "Files",
+      "relativePath": "Files"
+    },
+    {
+      "name": "Projects",
+      "relativePath": "Projects"
+    },
+    {
+      "name": "Writeups",
+      "relativePath": "Writeups"
+    }
+  ],
+  "nonMdFiles": [
+    {
+      "name": "Pasted image 20230625182620.png",
+      "basename": "Pasted image 20230625182620",
+      "relativePath": "Files/Pasted image 20230625182620.png"
+    },
+    {
+      "name": "converted-map.png",
+      "basename": "converted-map",
+      "relativePath": "Files/converted-map.png"
+    },
+    {
+      "name": "cool-login-message.png",
+      "basename": "cool-login-message",
+      "relativePath": "Files/cool-login-message.png"
+    },
+    {
+      "name": "firmware-list.png",
+      "basename": "firmware-list",
+      "relativePath": "Files/firmware-list.png"
+    },
+    {
+      "name": "hack-into-skynet-login.png",
+      "basename": "hack-into-skynet-login",
+      "relativePath": "Files/hack-into-skynet-login.png"
+    },
+    {
+      "name": "inspect-me-requestbin.png",
+      "basename": "inspect-me-requestbin",
+      "relativePath": "Files/inspect-me-requestbin.png"
+    },
+    {
+      "name": "iss-visualization.gif",
+      "basename": "iss-visualization",
+      "relativePath": "Files/iss-visualization.gif"
+    },
+    {
+      "name": "login.png",
+      "basename": "login",
+      "relativePath": "Files/login.png"
+    },
+    {
+      "name": "matrix.jpg",
+      "basename": "matrix",
+      "relativePath": "Files/matrix.jpg"
+    },
+    {
+      "name": "raspberry-pi.jpg",
+      "basename": "raspberry-pi",
+      "relativePath": "Files/raspberry-pi.jpg"
+    },
+    {
+      "name": "secure-cyberchef.png",
+      "basename": "secure-cyberchef",
+      "relativePath": "Files/secure-cyberchef.png"
+    },
+    {
+      "name": "secure-login-inject.png",
+      "basename": "secure-login-inject",
+      "relativePath": "Files/secure-login-inject.png"
+    },
+    {
+      "name": "secure-login.png",
+      "basename": "secure-login",
+      "relativePath": "Files/secure-login.png"
+    },
+    {
+      "name": "simple-globe.png",
+      "basename": "simple-globe",
+      "relativePath": "Files/simple-globe.png"
+    },
+    {
+      "name": "spherical.png",
+      "basename": "spherical",
+      "relativePath": "Files/spherical.png"
+    },
+    {
+      "name": "spinning-simple-globe.gif",
+      "basename": "spinning-simple-globe",
+      "relativePath": "Files/spinning-simple-globe.gif"
+    },
+    {
+      "name": "world-map.png",
+      "basename": "world-map",
+      "relativePath": "Files/world-map.png"
+    }
+  ]
+}

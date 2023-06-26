@@ -1,0 +1,507 @@
+[
+  {
+    "fileName": "redpwnCTF 2021",
+    "relativePath": "Writeups/redpwnCTF 2021.md",
+    "headings": [
+      {
+        "heading": "2021-07-09",
+        "level": 2
+      },
+      {
+        "heading": "pastebin-1",
+        "level": 1
+      },
+      {
+        "heading": "Category: web",
+        "level": 3
+      },
+      {
+        "heading": "Author: BrownieInMotion",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "secure",
+        "level": 1
+      },
+      {
+        "heading": "Category: web",
+        "level": 3
+      },
+      {
+        "heading": "Author: BrownieInMotion",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "cool",
+        "level": 1
+      },
+      {
+        "heading": "Category: web",
+        "level": 3
+      },
+      {
+        "heading": "Author: Arinerron & BrownieInMotion",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "magpieCTF 2021",
+    "relativePath": "Writeups/magpieCTF 2021.md",
+    "headings": [
+      {
+        "heading": "2021-02-19",
+        "level": 2
+      },
+      {
+        "heading": "Man-in-the-Mirror",
+        "level": 1
+      },
+      {
+        "heading": "Category: Networks",
+        "level": 3
+      },
+      {
+        "heading": "Author: James Lowther (Articuler)",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Hints",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Request Normally",
+        "level": 3
+      },
+      {
+        "heading": "Request with Intercept Proxy",
+        "level": 3
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "Birdbuster Video",
+        "level": 1
+      },
+      {
+        "heading": "Category: Web Exploitation",
+        "level": 3
+      },
+      {
+        "heading": "Author: James Lowther (Articuler)",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Hints",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "Richard Simmons: Sweatin' in LaTeX",
+        "level": 1
+      },
+      {
+        "heading": "Category: Web Exploitation",
+        "level": 3
+      },
+      {
+        "heading": "Author: James Lowther (Articuler)",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "The Smurfs Cipher",
+        "level": 1
+      },
+      {
+        "heading": "Category: Web Exploitation",
+        "level": 3
+      },
+      {
+        "heading": "Author: James Lowther (Articuler)",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "DynaTAC 8000x Keylogger",
+        "level": 1
+      },
+      {
+        "heading": "Category: Forensics",
+        "level": 3
+      },
+      {
+        "heading": "Author: James Lowther (Articuler)",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Hints",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "SECCON CTF 2021",
+    "relativePath": "Writeups/SECCON CTF 2021.md",
+    "headings": [
+      {
+        "heading": "2021-12-11",
+        "level": 2
+      },
+      {
+        "heading": "Vulnerability",
+        "level": 1
+      },
+      {
+        "heading": "Category: web",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Method",
+        "level": 2
+      },
+      {
+        "heading": "Basic POST Script",
+        "level": 2
+      },
+      {
+        "heading": "General Thoughts",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Solve Script",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "Real World CTF 2022",
+    "relativePath": "Writeups/Real World CTF 2022.md",
+    "headings": [
+      {
+        "heading": "2022-01-22",
+        "level": 2
+      },
+      {
+        "heading": "Hack into Skynet",
+        "level": 1
+      },
+      {
+        "heading": "Category: web",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "First Impressions",
+        "level": 2
+      },
+      {
+        "heading": "Logging in",
+        "level": 2
+      },
+      {
+        "heading": "SQL Injecting",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "ICC 2022",
+    "relativePath": "Writeups/ICC 2022.md",
+    "headings": [
+      {
+        "heading": "2022-06-14",
+        "level": 2
+      },
+      {
+        "heading": "Web of 64",
+        "level": 1
+      },
+      {
+        "heading": "Category: Web",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Code",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Solve Script",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "References",
+        "level": 2
+      },
+      {
+        "heading": "You shall not pass",
+        "level": 1
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "`CTF{50d1f7f8cb5de765cc0e910a908ba4822a085ef8491d1fee}`",
+        "level": 2
+      },
+      {
+        "heading": "Insane in the Membrain",
+        "level": 1
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Solution",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      },
+      {
+        "heading": "References",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "Cyber Apocalypse CTF 2022 - Intergalactic Chase",
+    "relativePath": "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "headings": [
+      {
+        "heading": "2022-05-15",
+        "level": 2
+      },
+      {
+        "heading": "Acnologia Portal",
+        "level": 1
+      },
+      {
+        "heading": "Category: Web",
+        "level": 3
+      },
+      {
+        "heading": "Description",
+        "level": 2
+      },
+      {
+        "heading": "Initial thoughts",
+        "level": 2
+      },
+      {
+        "heading": "Zip slip",
+        "level": 2
+      },
+      {
+        "heading": "The XXS",
+        "level": 2
+      },
+      {
+        "heading": "Final script",
+        "level": 2
+      },
+      {
+        "heading": "Flag",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "README",
+    "relativePath": "README.md",
+    "headings": [
+      {
+        "heading": "James Lowther - Blog",
+        "level": 1
+      }
+    ],
+    "links": [
+      {
+        "link": "LED Matrix - ISS Tracker",
+        "relativePath": "Projects/LED Matrix - ISS Tracker.md"
+      }
+    ]
+  },
+  {
+    "fileName": "LED Matrix - ISS Tracker",
+    "relativePath": "Projects/LED Matrix - ISS Tracker.md",
+    "headings": [
+      {
+        "heading": "2021-09-14",
+        "level": 2
+      },
+      {
+        "heading": "Parts",
+        "level": 2
+      },
+      {
+        "heading": "The Spinning Globe",
+        "level": 2
+      },
+      {
+        "heading": "Generating the nodes",
+        "level": 3
+      },
+      {
+        "heading": "Drawing the nodes",
+        "level": 3
+      },
+      {
+        "heading": "Making it spin",
+        "level": 3
+      },
+      {
+        "heading": "Adding the Earth bitmap",
+        "level": 3
+      },
+      {
+        "heading": "Drawing the ISS",
+        "level": 3
+      },
+      {
+        "heading": "Final result",
+        "level": 2
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "README",
+        "link": "LED Matrix - ISS Tracker",
+        "relativePath": "README.md"
+      }
+    ]
+  }
+]
