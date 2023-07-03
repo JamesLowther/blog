@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "Writeups/HTB - Inject.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Writeups/HTB - Inject.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "Writeups/HTB - Inject.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "Writeups/HTB - Inject.md"
               }
             }
           }
@@ -135,7 +135,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 326.5
+    "width": 326.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -147,20 +148,26 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "97ff2cc9b78d428d",
+  "active": "41817ebb2937953f",
   "lastOpenFiles": [
+    "Files/Pasted image 20230702232637.png",
+    "Files/Pasted image 20230702232253.png",
+    "Files/Pasted image 20230702232240.png",
+    "Files/Pasted image 20230702232213.png",
+    "Files/Pasted image 20230702232145.png",
     "Writeups/magpieCTF 2021.md",
+    "Writeups/Real World CTF 2022.md",
+    "Writeups/HTB - Inject.md",
+    "Writeups/ICC 2022.md",
+    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "README.md",
     "Guides/Enumeration Techniques.md",
     "Guides/Python __code__ Attribute Overwrite.md",
     "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
     "Guides/Privilege Escalation Techniques.md",
     "Projects/LED Matrix - ISS Tracker.md",
     "Writeups/redpwnCTF 2021.md",
-    "README.md",
     "Writeups/SECCON CTF 2021.md",
-    "Writeups/Real World CTF 2022.md",
-    "Writeups/ICC 2022.md",
-    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
     "Guides",
     "Guides",
     "Files/Pasted image 20230625182620.png",
@@ -176,10 +183,6 @@
     "Files/secure-login.png",
     "Files/secure-login-inject.png",
     "Files/login-inject.png",
-    "Files/secure-cyberchef.png",
-    "Files/cyberchef.png",
-    "Files/inspect-me-requestbin.png",
-    "Files/requestbin.png",
     "images/hack-into-skynet",
     "images/hack-into-skynet/login.png.md",
     "images/amidst-us",
