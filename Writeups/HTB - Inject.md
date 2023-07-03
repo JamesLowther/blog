@@ -1,6 +1,6 @@
 *2023-07-02*
 
-#ctf-writeup 
+#htb-writeup 
 
 > [!Abstract]
 > This writeup is for the Inject HTB machine. It's labelled an easy Linux box, and it was picked as an opportunity to brush up on my rusty HTB skills.
