@@ -248,7 +248,7 @@ frank@inject:~$
 ```
 
 From here the lateral move was quite simple. All we needed to do was `su` into the `phil` user. This is where the password `DocPhillovestoInject123` we found earlier in `settings.xml` comes in handy.
-`
+
 ```sh
 frank@inject:~$ su - phil
 Password: 
