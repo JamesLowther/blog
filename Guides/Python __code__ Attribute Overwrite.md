@@ -2,7 +2,7 @@
 
 #guide 
 
-> [!Abstract]
+> [!Abstract] Introduction
 >The `__code__` attribute of a Python function can be overwritten, allowing us to break out of a constrained namespace and use an elevated one.
 
 ---
