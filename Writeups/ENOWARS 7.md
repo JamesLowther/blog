@@ -254,8 +254,8 @@ def pwn(ip, friend):
 
     all_flags = []
     for room in rooms:
-        room_hash = sha256(room.encode("utf-8")).hexdigest()
-        flags = get_flag(room_hash, endpoint=endpoint)
+        room_id = sha256(room.encode("utf-8")).hexdigest()
+        flags = get_flag(room_id, endpoint=endpoint)
 
         all_flags += flags
 
