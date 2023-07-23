@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+                "file": "Writeups/ENOWARS 7.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
@@ -66,8 +66,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -87,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+                "file": "Writeups/ENOWARS 7.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
+                "file": "Writeups/ENOWARS 7.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -127,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Guides/XFCE Docked Laptop Lid Switch Suppression.md"
+                "file": "Writeups/ENOWARS 7.md"
               }
             }
           }
@@ -151,6 +150,7 @@
   },
   "active": "97ff2cc9b78d428d",
   "lastOpenFiles": [
+    "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
     "Guides/Python __code__ Attribute Overwrite.md",
     "Guides/Privilege Escalation Techniques.md",
     "Writeups/magpieCTF 2021.md",
@@ -173,7 +173,6 @@
     "Files/Pasted image 20230702232240.png",
     "Files/Pasted image 20230702232213.png",
     "Files/Pasted image 20230702232145.png",
-    "Guides/XFCE Docked Laptop Lid Switch Suppression.md",
     "Guides",
     "Guides",
     "Files/Pasted image 20230625182620.png",

@@ -109,7 +109,7 @@ def get_rooms(friend, endpoint=None):
 
 After finding the room names we needed to get the ID to the chatroom itself so that we can include it in the URI. Reading through the source code, we found that the ID is generated using the SHA-256 hash of the room's name.
 
-```node
+```js
 // chatroomRouter.js
 
 router.post('/', async (req, res) => {
