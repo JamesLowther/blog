@@ -92,7 +92,7 @@ First, we performed a GET request to the `/profile` endpoint. This allowed us vi
 
 ```python
 def get_rooms(friend, endpoint=None):
-    print("Getting rooms...", end="")
+    print("Getting rooms... ", end="")
     r = s.get(f"{endpoint}/profile/{friend}", timeout=TIMEOUT)
     print(r.status_code)
 
@@ -134,7 +134,7 @@ Finally, we can hit the `/chatroom` endpoint and get the flag!
 
 ```python
 def get_flag(room_id, endpoint=None):
-    print("Getting flags from chatroom...", end="")
+    print("Getting flags from chatroom... ", end="")
     r = s.get(f"{endpoint}/chatroom/{room_id}", timeout=TIMEOUT)
     print(r.status_code)
 
@@ -205,7 +205,7 @@ def accept_request(from_u, to_u, endpoint=None):
     print(r.status_code)
 
 def get_rooms(friend, endpoint=None):
-    print("Getting rooms...", end="")
+    print("Getting rooms... ", end="")
     r = s.get(f"{endpoint}/profile/{friend}", timeout=TIMEOUT)
     print(r.status_code)
 
@@ -220,7 +220,7 @@ def get_rooms(friend, endpoint=None):
     return room_list
 
 def get_flag(room_id, endpoint=None):
-    print("Getting flags from chatroom...", end="")
+    print("Getting flags from chatroom... ", end="")
     r = s.get(f"{endpoint}/chatroom/{room_id}", timeout=TIMEOUT)
     print(r.status_code)
 
