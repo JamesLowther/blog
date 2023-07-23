@@ -5,25 +5,26 @@
 > [!Abstract] Introduction
 > ENOWARS 7 was an Attack/Defence CTF hosted in the summer of 2023. During the competition, teams are given a Linux-based vulnbox the runs a number of vulnerable services. 
 > 
-> The objective of the game is to find and patch vulnerabilities on your own machine while simultaneously exploiting those same vulnerabilities against everyone else. This leads to a fast-paced compeition that tests lots of different skills. 
+> The objective of the game is to find and patch vulnerabilities on your own machine while simultaneously exploiting those same vulnerabilities against everyone else. This leads to a fast-paced competition that tests lots of different skills. 
 > 
 > This year's ENOWARS was very well put together, and my team and I had a lot of fun competing.
 > 
 > https://ctftime.org/event/2040
 
+---
 
 # asocialnetwork
 **Category: Web**
 
-For this service we were given a node.js application running through a Docker container. Only a single port, `3000`, was exposed. When navigating to the service in a web browser you are taken to a mock social media platform, complete with friend requests and a fully-functional chatroom. 
+For this service, we were given a node.js application running through a Docker container. Only a single port, `3000`, was exposed. When navigating to the service in a web browser you are taken to a mock social media platform, complete with friend requests and a fully-functional chatroom. 
 
 The page is also quite stylish!
 
 ![[../Files/Pasted image 20230722220044.png]]
 
-During an attack/defence CTF, flags are updated once per "tick", or in other words the flags change once a minute. After each tick, information about where to find the new flags is published. In this case it was a username, indicating that we had to read the flag from some data that was associated a specific user.
+During an attack/defence CTF, flags are updated once per "tick", or in other words the flags change once a minute. After each tick, information about where to find the new flags is published. In this case, it was a username, indicating that we had to read the flag from some data that was associated with a specific user.
 
-One feature of the platform was that you could create private chatrooms only available to you friends. We guessed that the flags would be hidden in one of these chatrooms, and needed to figure out how to get access.
+One feature of the platform was that you could create private chatrooms only available to your friends. We guessed that the flags would be hidden in one of these chatrooms, and needed to figure out how to get access.
 
 We found that the POST endpoint that is used to accept a friend request does not have any authentication, meaning we can accept a friend request for a user different than our own.
 
@@ -85,9 +86,9 @@ def accept_request(from_u, to_u, endpoint=None):
 ```
 
 ## Viewing the private chatrooms
-Now that we are friends with the user we are able to see their private chatrooms. Finding the link to the chatroom is slightly more complicated.
+Now that we are friends with the user can see their private chatrooms. Finding the link to the chatroom is slightly more complicated.
 
-First we performed a GET request to the `/profile` endpoint. This let us view the private profile page of the user and listed the names of their chatrooms. The BeautifulSoup library was used to help with HTML parsing.
+First, we performed a GET request to the `/profile` endpoint. This allowed us view the private profile page of the user and listed the names of their chatrooms. The BeautifulSoup library was used to help with HTML parsing.
 
 ```python
 def get_rooms(friend, endpoint=None):
@@ -304,10 +305,12 @@ if __name__ == "__main__":
     main()
 ```
 
+---
+
 # oldschool
 **Category: Web**
 
-This service was another web service running under Docker. It was written in PHP, a language I am less confident with, and was running on the port `9080`. This service was meant to replicate a school management system, allowing students to enrol in courses and view their grades.
+This service was another web service running under Docker. It was written in PHP, a language I am less confident with, and was running on port `9080`. This service was meant to replicate a school management system, allowing students to enrol in courses and view their grades.
 
 ![[../Files/Pasted image 20230722223104.png]]
 
@@ -337,11 +340,11 @@ RAAYBG
 --7a9bf3531b4f35a4f2f3cf4f0865b2e3--
 ```
 
-What's interesting here is the XML file that was being uploaded. It looked like they were exploiting an XXE injection, which allows misconfigured XML parsers to view files on the filesystem. In the attacker's case, they were reading the contents of the file at `/service/grades/68518_9756b1161f58cb5c1dd67633666c6674`.
+What's interesting here is the XML file that was being uploaded. It looked like they were exploiting an XXE injection, which allows for misconfigured XML parsers to view files on the filesystem. In the attacker's case, they were reading the contents of the file at `/service/grades/68518_9756b1161f58cb5c1dd67633666c6674`.
 
 Looking at this we did what any good hacker would do, so we stole it.
 
-The "Courses" page allowed you to upload an XML file which was meant to contain course data, so this was the likely vector for our injection.
+The "Courses" page allowed you to upload an XML file that was meant to contain course data, so this was the likely vector for our injection.
 
 > [!Todo]
 > Our goal was split into three parts:
@@ -367,7 +370,7 @@ def create_account(username, endpoint=None):
 ## Creating a course with the XXE injection
 The flag was indicated to be in a file on the filesystem. In this case, those paths were given by the CTF organisers on each tick, so we already knew where to look.
 
-It was a matter of making a POST to the `/index.php?action=courses` endpoint that contained multipart form-data that included our course details and our malicious XML payload.
+It was a matter of making a POST to the `/index.php?action=courses` endpoint that contained multipart form data that included our course details and our malicious XML payload.
 
 ```python
 def upload_xxe(grade_file, endpoint=None):
@@ -410,7 +413,7 @@ def get_flag(course_id, endpoint=None):
     return None
 ```
 
-> [!Success}
+> [!Success]
 > And that's all there is to it! After uploading the malicious XML file, the contents of the file were read and the flag was set as the course's name! We solved this exploit near the end of the CTF, so we weren't able to steal as many flags from other teams. Regardless, I'm glad we got a working exploit!
 
 Here's the final script we used to continually run the exploit against all the other vulnboxes:
@@ -529,3 +532,14 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+---
+
+# Conclusion
+Attack/Defence CTFs don't come around too often, especially in North America. Because of this, we like to make the most of them whenever we get the opportunity to play. One fear is that a CTF will be too challenging, or too easy, to make it rewarding to participate in.
+
+In this competition I primarily focused on attacking services and making sure we had a good SLA. I never managed to patch the vulnerabilities that we found, despite the fixes being well-documented online. This is a skill I would like to improve on for next time.
+
+For ENOWARS 7, the organisers did a great job of creating fun and innovative challenges that hit the sweet spot of difficulty and reward. Despite having to wake up at 4:45 am (the organisers are based in Germany), I had a great time with this CTF and look forward to a sequel next year!
+
+---
