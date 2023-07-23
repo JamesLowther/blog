@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Writeups/HTB - Inject.md",
+                "file": "Writeups/ENOWARS 7.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Writeups/HTB - Inject.md",
+                "file": "Writeups/ENOWARS 7.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Writeups/HTB - Inject.md",
+                "file": "Writeups/ENOWARS 7.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Writeups/HTB - Inject.md"
+                "file": "Writeups/ENOWARS 7.md"
               }
             }
           }
@@ -148,18 +148,19 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "41817ebb2937953f",
+  "active": "97ff2cc9b78d428d",
   "lastOpenFiles": [
+    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
+    "Writeups/ENOWARS 7.md",
+    "Writeups/magpieCTF 2021.md",
+    "Writeups/HTB - Inject.md",
+    "Writeups/ICC 2022.md",
     "Files/Pasted image 20230702232637.png",
     "Files/Pasted image 20230702232253.png",
     "Files/Pasted image 20230702232240.png",
     "Files/Pasted image 20230702232213.png",
     "Files/Pasted image 20230702232145.png",
-    "Writeups/magpieCTF 2021.md",
     "Writeups/Real World CTF 2022.md",
-    "Writeups/HTB - Inject.md",
-    "Writeups/ICC 2022.md",
-    "Writeups/Cyber Apocalypse CTF 2022 - Intergalactic Chase.md",
     "README.md",
     "Guides/Enumeration Techniques.md",
     "Guides/Python __code__ Attribute Overwrite.md",
@@ -182,7 +183,6 @@
     "images",
     "Files/secure-login.png",
     "Files/secure-login-inject.png",
-    "Files/login-inject.png",
     "images/hack-into-skynet",
     "images/hack-into-skynet/login.png.md",
     "images/amidst-us",
