@@ -2,7 +2,7 @@
 
 #guide 
 
-> [!Abstract]
+> [!Abstract] Introduction
 > This page includes a number of initial techniques and one-liners to help with privilege escalation.
 
 ---

@@ -2,7 +2,7 @@
 
 #htb-writeup 
 
-> [!Abstract]
+> [!Abstract] Introduction
 > This writeup is for the Inject HTB machine. It's labelled an easy Linux box, and it was picked as an opportunity to brush up on my rusty HTB skills.
 > 
 > ![[../Files/Pasted image 20230702232240.png]]

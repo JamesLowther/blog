@@ -2,7 +2,7 @@
 
 #project
 
-> [!Abstract]
+> [!Abstract] Introduction
 > The goal of this project was simple - create a visualization to display the current position of the ISS in real-time. This was my first major attempt to create a display to be used on my new 64x32 RGB matrix from Adafruit.
 
 

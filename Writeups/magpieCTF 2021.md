@@ -2,7 +2,7 @@
 
 #ctf-writeup 
 
-> [!Abstract]
+> [!Abstract] Introduction
 > I was an organiser for this CTF so the following write-ups are for challenges that I developed. The full repository with all of the challenges can be found [here](https://github.com/infosec-ucalgary/magpieCTF-2021).
 
 ***

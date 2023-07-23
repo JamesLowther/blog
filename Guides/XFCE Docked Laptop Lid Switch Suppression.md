@@ -2,7 +2,7 @@
 
 #guide
 
-> [!Abstract]
+> [!Abstract] Introduction
 > XFCE looks to have limited support for laptop lid switch suppression when connected to a dock. Despite setting the lid switch to "ignore" in the XFCE power manager, I found that the computer would still go to sleep when the lid was closed.
 
 There are a few conflicting services that need config changes to get this working.
