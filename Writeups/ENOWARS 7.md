@@ -133,9 +133,9 @@ room_id = sha256(room.encode("utf-8")).hexdigest()
 Finally, we can hit the `/chatroom` endpoint and get the flag!
 
 ```python
-def get_flag(room_name, endpoint=None):
+def get_flag(room_id, endpoint=None):
     print("Getting flags from chatroom...", end="")
-    r = s.get(f"{endpoint}/chatroom/{room_name}", timeout=TIMEOUT)
+    r = s.get(f"{endpoint}/chatroom/{room_id}", timeout=TIMEOUT)
     print(r.status_code)
 
     parsed_html = BeautifulSoup(r.text, "html.parser")
@@ -215,14 +215,13 @@ def get_rooms(friend, endpoint=None):
     room_list = []
     for room in rooms:
         room_name = room.find("h3").text
-
         room_list.append(room_name)
 
     return room_list
 
-def get_flag(room_name, endpoint=None):
+def get_flag(room_id, endpoint=None):
     print("Getting flags from chatroom...", end="")
-    r = s.get(f"{endpoint}/chatroom/{room_name}", timeout=TIMEOUT)
+    r = s.get(f"{endpoint}/chatroom/{room_id}", timeout=TIMEOUT)
     print(r.status_code)
 
     parsed_html = BeautifulSoup(r.text, "html.parser")
