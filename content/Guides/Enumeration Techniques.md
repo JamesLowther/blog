@@ -7,14 +7,14 @@ date: 2022-04-15
 > This page includes a number of initial techniques and one-liners to help with privilege escalaton.
 
 ---
-## Nmap
-### Initial scan
+# Nmap
+## Initial scan
 `nmap -vv -sV -sC -oN initial <ip>`
 
-### Full scan
+## Full scan
 `nmap -vv -sV -sC -p- -A -oN full <ip>`
 
-## Gobuster
+# Gobuster
 `gobuster dir -u http://<host> -w /usr/share/wordlists/dirb/common.txt`
 
 ---

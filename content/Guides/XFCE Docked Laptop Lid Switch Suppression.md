@@ -14,7 +14,7 @@ There are a few conflicting services that need config changes to get this workin
 
 ---
 
-## Disable UPower
+# Disable UPower
 UPower looks to override the lid suppression settings of XFCE power manager so we need to disable it. Disabling this also looks to remove the lid settings in the Power Manager GUI.
 ```
 # /etc/UPower/UPower.conf
@@ -22,7 +22,7 @@ UPower looks to override the lid suppression settings of XFCE power manager so w
 IgnoreLid=true
 ```
 
-## Disable xfce4-power-manager
+# Disable xfce4-power-manager
 These commands will tell XFCE to delegate lid switch management to systemd-logind instead:
 ```sh
 # Update config.
@@ -37,7 +37,7 @@ Verify this change worked by ensuring systemd is not inhibited from `handle-lid-
 systemd-inhibit --list --mode=block
 ```
 
-## Configure systemd-logind
+# Configure systemd-logind
 Configure systemd-logind to ignore the lid switch when an external monitor is connected (considered docked):
 ```
 # /etc/systemd/logind.conf
@@ -51,7 +51,7 @@ sudo systemctl restart systemd-logind
 
 A reboot after this might not be a bad idea.
 
-## Final steps
+# Final steps
 - Ensure that OLED screens are disabled when docked to prevent burn-in.
 	-  You can do this in the display settings.
 

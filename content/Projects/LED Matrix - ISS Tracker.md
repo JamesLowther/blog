@@ -15,7 +15,7 @@ The source code for this project can be found [here](https://github.com/JamesLow
 
 ***
 
-## Parts
+# Parts
 The following are the parts that I used to build this project. Most of them were purchased from Adafruit.
 * [64x32 RGB LED Matrix - 3mm pitch](https://www.adafruit.com/product/2279)
 * [Adafruit RGB Matrix Bonnet for Raspberry Pi](https://www.adafruit.com/product/3211)
@@ -28,10 +28,10 @@ The following are the parts that I used to build this project. Most of them were
 
 ***
 
-## The Spinning Globe
+# The Spinning Globe
 To get this to work, I needed to brush up on my linear algebra skills. I used this [video](https://www.youtube.com/watch?v=7Q6yvpjvKVg) as a starting point for my code. It explains how to convert from a spherical coordinate system to a Cartesian coordinate system, initialize a numpy matrix to store the coordinates for the sphere, and how to apply a rotation matrix. The video describes how to use this to draw an ASCII Earth with pygame, but I managed to adapt it to work with the RGB matrix.
 
-### Generating the nodes
+## Generating the nodes
 First, for each latitude (north/south) I iterated over a number of longitudes (east/west) and converted the latitude/longitude pair to a xyz coordinate. These coordinates were then converted to a numpy matrix. The `add_nodes()` and `convert_coords()` methods were written to achieve this.
 
 Converting from spherical to Cartesian coordinates is done using the following equations:
@@ -85,7 +85,7 @@ def add_nodes(self):
     ...
 ```
 
-### Drawing the nodes
+## Drawing the nodes
 Once the nodes have been initialized they can be drawn to the screen. Drawing is done using the PIL library. On each frame, a 64x32 PIL image is created and sent to the RGB matrix to be drawn. To create the frame, each node is iterated over and the pixel at the `x` and `y` coordinate is drawn (only if `z > 1` to only draw nodes in the foreground).
 
 ```python
@@ -112,7 +112,7 @@ This is what the result looks like before a bitmap of the Earth is applied. The 
 
 ![[simple-globe.png]]
 
-### Making it spin
+## Making it spin
 Making the sphere spin is relatively easy with a little more linear algebra. On every frame, before it gets drawn, all we have to do is apply a rotation matrix to the node array that rotates each node by some angle $\theta$. This can be done with the `matmul()` function provided by numpy. The matrix used in the code will spin the nodes around the vertical axis.
 
 ```python
@@ -158,7 +158,7 @@ This will produce the following result:
 
 ![[spinning-simple-globe.gif]]
 
-### Adding the Earth bitmap
+## Adding the Earth bitmap
 To actually make the sphere look like the Earth I took a black and white image of the Earth and reduced its size to `MAP_WIDTH` by `MAP_HEIGHT`. I then converted the image to an array of bits, 1 for a white pixel and 0 for a black pixel. When drawing the Earth I then check the array at the index for the corresponding node and only draw the pixel if the bit is 1. The following image is converted with the code below:
 
 ![[world-map.png]]
@@ -187,7 +187,7 @@ def convert_map(self):
 
 ![[converted-map.png]]
 
-### Drawing the ISS
+## Drawing the ISS
 Drawing the ISS on the sphere is very similar to drawing the nodes for the Earth. Every 5 seconds I'm sending a request to an [API](http://api.open-notify.org/iss-now.json) which returns the current latitude and longitude for the ISS. I take this information and generate a node matrix with a single node for the ISS. The rotation matrix is applied to this new ISS matrix as well. Then when drawing the frame, I change the pixel for where the ISS is to red.
 
 I do the same process to draw the green dot for my location.
@@ -229,7 +229,7 @@ def draw(self, image):
 
 ***
 
-## Final result
+# Final result
 ![[iss-visualization.gif]]
 
 A video of the final ISS tracking display running on the RGB matrix can be found [here](https://www.youtube.com/watch?v=hGGuzK79fT0).

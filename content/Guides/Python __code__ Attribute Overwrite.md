@@ -20,7 +20,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 We can overwrite this attribute with the code of another function or a lambda. Lambdas are generally easier when working with code injections.
 
-## Example
+# Example
 ```python
 def func1():
 	print(1)
@@ -38,13 +38,13 @@ Output:
 2
 ```
 
-## Namespace Escalation
+# Namespace Escalation
 We can use this property to escalate to a namespace with more functions available. Consider the following `exec()` injection with a limited namespace.
 
 > [!Note]
 > Notice that the globals available to use in the `exec()` function have been limited. In this case, only `print()` can be called.
 
-#### Failed exploit
+## Failed exploit
 ```python
 import os
 
@@ -73,7 +73,7 @@ We get the error that the `os` module is not defined, which make sense since it'
 
 Now, lets try the same code with a different injection. This time we're going to overwrite the `__code__` attribute of `print` with that of a custom lambda. We'll then run `print()`.
 
-#### Working exploit
+## Working exploit
 ```python
 import os
 

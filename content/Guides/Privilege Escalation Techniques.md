@@ -8,17 +8,17 @@ date: 2022-04-12
 
 ---
 
-## SUID bit escalation
+# SUID bit escalation
 - `find / -perm -u=s -type f 2>/dev/null`
 - `getcap -r / 2>/dev/null`
 
 Check your findings against https://gtfobins.github.io/.
 
-## File ownership
+# File ownership
 - `find / -user <user>`
 - `find / -group <group>`
 
-## Pspy64
+# Pspy64
 Used to find root-owned processes and see commands run by other users.
 
 https://github.com/DominicBreuker/pspy
