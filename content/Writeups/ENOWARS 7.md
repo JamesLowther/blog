@@ -1,14 +1,15 @@
-*2023-07-22*
-
-#ctf-writeup 
-
+---
+tags:
+  - ctf-writeup
+date: 2023-07-22
+---
 > [!Abstract] Introduction
-> ENOWARS 7 was an Attack/Defence CTF hosted in the summer of 2023. During the competition, teams are given a Linux-based vulnbox the runs a number of vulnerable services. 
-> 
-> The objective of the game is to find and patch vulnerabilities on your own machine while simultaneously exploiting those same vulnerabilities against everyone else. This leads to a fast-paced competition that tests lots of different skills. 
-> 
+> ENOWARS 7 was an Attack/Defence CTF hosted in the summer of 2023. During the competition, teams are given a Linux-based vulnbox the runs a number of vulnerable services.
+>
+> The objective of the game is to find and patch vulnerabilities on your own machine while simultaneously exploiting those same vulnerabilities against everyone else. This leads to a fast-paced competition that tests lots of different skills.
+>
 > This year's ENOWARS was very well put together, and my team and I had a lot of fun competing.
-> 
+>
 > https://ctftime.org/event/2040
 
 ---
@@ -16,11 +17,11 @@
 # asocialnetwork
 **Category: Web**
 
-For this service, we were given a node.js application running through a Docker container. Only a single port, `3000`, was exposed. When navigating to the service in a web browser you are taken to a mock social media platform, complete with friend requests and a fully-functional chatroom. 
+For this service, we were given a node.js application running through a Docker container. Only a single port, `3000`, was exposed. When navigating to the service in a web browser you are taken to a mock social media platform, complete with friend requests and a fully-functional chatroom.
 
 The page is also quite stylish!
 
-![[../Files/Pasted image 20230722220044.png]]
+![[Pasted image 20230722220044.png]]
 
 During an attack/defence CTF, flags are updated once per "tick", or in other words the flags change once a minute. After each tick, information about where to find the new flags is published. In this case, it was a username, indicating that we had to read the flag from some data that was associated with a specific user.
 
@@ -311,7 +312,7 @@ if __name__ == "__main__":
 
 This service was another web service running under Docker. It was written in PHP, a language I am less confident with, and was running on port `9080`. This service was meant to replicate a school management system, allowing students to enrol in courses and view their grades.
 
-![[../Files/Pasted image 20230722223104.png]]
+![[Pasted image 20230722223104.png]]
 
 Our discovery of one of the exploits was not found by reviewing the source code. Instead, we found a malicious HTTP payload in a packet capture we had running on our vulnbox. The response to the request had one of our flags, so we knew this was a valid exploit.
 
@@ -330,7 +331,7 @@ Content-Disposition: form-data; name="is_private"
 
 on
 --7a9bf3531b4f35a4f2f3cf4f0865b2e3
-Content-Disposition: form-data; name="title" 
+Content-Disposition: form-data; name="title"
 
 RAAYBG
 --7a9bf3531b4f35a4f2f3cf4f0865b2e3 Content-Disposition: form-data; name="EFsfa.xml"; filename="EFsfa.xml"
@@ -540,5 +541,3 @@ Attack/Defence CTFs don't come around too often, especially in North America. Be
 In this competition I primarily focused on attacking services and making sure we had a good SLA. I never managed to patch the vulnerabilities that we found, despite the fixes being well-documented online. This is a skill I would like to improve on for next time.
 
 For ENOWARS 7, the organisers did a great job of creating fun and innovative challenges that hit the sweet spot of difficulty and reward. Despite having to wake up at 4:45 am (the organisers are based in Germany), I had a great time with this CTF and look forward to a sequel next year!
-
----

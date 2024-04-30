@@ -1,7 +1,8 @@
-*2022-04-12*
-
-#guide 
-
+---
+tags:
+  - guide
+date: 2022-04-12
+---
 > [!Abstract] Introduction
 > This page includes a number of initial techniques and one-liners to help with privilege escalation.
 
@@ -26,5 +27,3 @@ https://github.com/DominicBreuker/pspy
 
 # References
 * https://github.com/infosec-ucalgary/CTFCommands/blob/main/Pentesting.md
-
----

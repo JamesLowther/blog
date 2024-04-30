@@ -1,7 +1,8 @@
-*2021-02-19*
-
-#ctf-writeup 
-
+---
+tags:
+  - ctf-writeup
+date: 2021-02-19
+---
 > [!Abstract] Introduction
 > I was an organiser for this CTF so the following write-ups are for challenges that I developed. The full repository with all of the challenges can be found [here](https://github.com/infosec-ucalgary/magpieCTF-2021).
 
@@ -299,5 +300,3 @@ main()
 
 ## Flag
 `magpie{itstoobadtextingwasnotevenathingbackthen}`
-
-***

@@ -1,7 +1,8 @@
-*2023-06-15*
-
-#guide
-
+---
+tags:
+  - guide
+date: 2023-06-15*
+---
 > [!Abstract] Introduction
 > XFCE looks to have limited support for laptop lid switch suppression when connected to a dock. Despite setting the lid switch to "ignore" in the XFCE power manager, I found that the computer would still go to sleep when the lid was closed.
 
@@ -51,7 +52,7 @@ sudo systemctl restart systemd-logind
 A reboot after this might not be a bad idea.
 
 ## Final steps
-- Ensure that OLED screens are disabled when docked to prevent burn-in. 
+- Ensure that OLED screens are disabled when docked to prevent burn-in.
 	-  You can do this in the display settings.
 
 ---
@@ -59,5 +60,3 @@ A reboot after this might not be a bad idea.
 # References
 - https://docs.xfce.org/xfce/xfce4-power-manager/faq#how_can_i_make_logind_handle_button_events_instead_of_xfce4-power-manager
 - https://www.freedesktop.org/software/systemd/man/logind.conf.html
-
----

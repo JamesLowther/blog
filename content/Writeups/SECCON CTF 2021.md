@@ -1,7 +1,8 @@
-*2021-12-11*
-
-#ctf-writeup 
-
+---
+tags:
+  - ctf-writeup
+date: 2021-12-11
+---
 Link: https://ctf.seccon.jp/
 
 ***
@@ -157,5 +158,3 @@ main()
 
 ## Flag
 `SECCON{LE4RNING_FR0M_7HE_PA5T_FINDIN6_N0TABLE_VULNERABILITIE5}`
-
-***

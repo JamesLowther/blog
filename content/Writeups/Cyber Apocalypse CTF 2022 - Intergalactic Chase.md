@@ -1,7 +1,8 @@
-*2022-05-15*
-
-#ctf-writeup
-
+---
+tags:
+  - ctf-writeup
+date: 2022-05-15
+---
 ***
 
 # Acnologia Portal
@@ -17,8 +18,8 @@ In `routes.py` we can see all the endpoints available to us. Many of the endpoin
 
 I created an account, and after logging in was given a list of firmware and the ability to report bugs.
 
-![[../Files/login.png]]
-![[../Files/firmware-list.png]]
+![[login.png]]
+![[firmware-list.png]]
 
 Looking at `routes.py` I could see that after posting a firmware report, a function `visit_report()` is called. This function launches a selenium driver in `bot.py` that visits the report review page using a bot with administrative credentials. This immediately indicates an XXS injection.
 
@@ -182,5 +183,3 @@ main()
 
 ## Flag
 `HTB{des3r1aliz3_4ll_th3_th1ngs}`
-
-***

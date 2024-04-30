@@ -1,12 +1,13 @@
-*2021-09-14*
-
-#project
-
+---
+tags:
+  - project
+date: 2021-09-14
+---
 > [!Abstract] Introduction
 > The goal of this project was simple - create a visualization to display the current position of the ISS in real-time. This was my first major attempt to create a display to be used on my new 64x32 RGB matrix from Adafruit.
 
 
-![[../Files/matrix.jpg]]
+![[matrix.jpg]]
 
 The red dot on the image above represents the ISS and the green dot shows my current location. Displayed on the left there is time, ISS latitude, ISS longitude, and the number of astronauts on board (one coloured square for each).
 
@@ -23,7 +24,7 @@ The following are the parts that I used to build this project. Most of them were
 * [Raspberry Pi 4 Model B](https://www.adafruit.com/product/4292)
 * [Official Raspberry Pi Power Supply 5.1V 3A with USB C](https://www.adafruit.com/product/4298)
 
-![[../Files/raspberry-pi.jpg]]
+![[raspberry-pi.jpg]]
 
 ***
 
@@ -39,12 +40,12 @@ $$x=\sqrt{r\sin{\theta}\cos{\varphi}}$$
 $$y=\sqrt{r\cos{\theta}}$$
 $$z=\sqrt{r\sin{\theta}\sin{\varphi}}$$
 
-When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this. 
+When given standard latitude and longitude values as input, $\theta$ is the complement of the latitude, or co-latitude, and $\varphi$ is the complement of the longitude. $r$ is the radius of the sphere. The following image from the [Wikipedia](https://en.wikipedia.org/wiki/Spherical_coordinate_system) article helps illustrate this.
 
 > [!Note]
 > I switched the equations for y and z to allow y to represent the vertical axis.
 
-![[../Files/spherical.png]]
+![[spherical.png]]
 
 Here is the code the implements this:
 
@@ -109,7 +110,7 @@ def draw(self, image):
 
 This is what the result looks like before a bitmap of the Earth is applied. The resolution can easily be increased by changing the `MAP_WIDTH` and `MAP_HEIGHT` variables before the nodes get created. The resolution below is lower than what is used in the final result. The higher the resolution the more computations are needed when rotating and drawing the sphere.
 
-![[../Files/simple-globe.png]]
+![[simple-globe.png]]
 
 ### Making it spin
 Making the sphere spin is relatively easy with a little more linear algebra. On every frame, before it gets drawn, all we have to do is apply a rotation matrix to the node array that rotates each node by some angle $\theta$. This can be done with the `matmul()` function provided by numpy. The matrix used in the code will spin the nodes around the vertical axis.
@@ -155,12 +156,12 @@ def rotate(self, matrix):
 
 This will produce the following result:
 
-![[../Files/spinning-simple-globe.gif]]
+![[spinning-simple-globe.gif]]
 
 ### Adding the Earth bitmap
 To actually make the sphere look like the Earth I took a black and white image of the Earth and reduced its size to `MAP_WIDTH` by `MAP_HEIGHT`. I then converted the image to an array of bits, 1 for a white pixel and 0 for a black pixel. When drawing the Earth I then check the array at the index for the corresponding node and only draw the pixel if the bit is 1. The following image is converted with the code below:
 
-![[../Files/world-map.png]]
+![[world-map.png]]
 
 ```python
 def convert_map(self):
@@ -184,7 +185,7 @@ def convert_map(self):
             self._map.append(int(pixel == 255))
 ```
 
-![[../Files/converted-map.png]]
+![[converted-map.png]]
 
 ### Drawing the ISS
 Drawing the ISS on the sphere is very similar to drawing the nodes for the Earth. Every 5 seconds I'm sending a request to an [API](http://api.open-notify.org/iss-now.json) which returns the current latitude and longitude for the ISS. I take this information and generate a node matrix with a single node for the ISS. The rotation matrix is applied to this new ISS matrix as well. Then when drawing the frame, I change the pixel for where the ISS is to red.
@@ -229,10 +230,8 @@ def draw(self, image):
 ***
 
 ## Final result
-![[../Files/iss-visualization.gif]]
+![[iss-visualization.gif]]
 
 A video of the final ISS tracking display running on the RGB matrix can be found [here](https://www.youtube.com/watch?v=hGGuzK79fT0).
 
 This was a really fun project that forced me to brush up on my linear algebra. It is a cool visualization to leave running in the background.
-
-***

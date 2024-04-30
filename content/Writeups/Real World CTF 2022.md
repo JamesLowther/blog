@@ -1,7 +1,8 @@
-*2022-01-22*
-
-#ctf-writeup 
-
+---
+tags:
+  - ctf-writeup
+date: 2022-01-22
+---
 Link: https://realworldctf.com/
 
 ***
@@ -19,7 +20,7 @@ For this challenge, we are given a link to a website and the source code for the
 
 The website brings you to a login page:
 
-![[../Files/hack-into-skynet-login.png]]
+![[hack-into-skynet-login.png]]
 
 A quick attempt at a SQL injection on this page doesn't seem to work. The code supports this theory, as passwords are hashed before being sent to the query.
 
@@ -59,7 +60,7 @@ def query_kill_time():
 This `query_kill_time()` function is only called if we have a valid `SessionId` cookie, something we can only get by logging in. Therefore, we need to somehow log in before we can do any sort of injection.
 
 ## Logging in
-Upon closer inspection of the `query_login_attempt()` function we see that its login logic is sort of backwards. It first queries for the password in the database, then checks if the username given by the user matches the username associated with the result of the query. 
+Upon closer inspection of the `query_login_attempt()` function we see that its login logic is sort of backwards. It first queries for the password in the database, then checks if the username given by the user matches the username associated with the result of the query.
 
 If we send a random, invalid, password along with an empty username, the SQL query will return an empty username from the database. This empty username will match with our empty username and we will "log in". This provides us with a `SessionId` that we can use to start querying the `query_kill_time()` function.
 
@@ -68,7 +69,7 @@ The following curl command illustrates this:
 curl -v -X POST http://47.242.21.212:8081/login \
     -F "username=" \
     -F "password=asdasdasd"
-    
+
 *   Trying 47.242.21.212:8081...
 * Connected to 47.242.21.212 (47.242.21.212) port 8081 (#0)
 > POST /login HTTP/1.1
@@ -233,5 +234,3 @@ curl -v -X POST 47.242.21.212:8085 \
 
 ## Flag
 `rwctf{t0-h4ck-$kynet-0r-f1ask_that-Is-th3-questi0n}`
-
-***

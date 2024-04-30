@@ -1,12 +1,12 @@
-*2022-04-15*
-
-#guide 
-
+---
+tags:
+  - guide
+date: 2022-04-15
+---
 > [!Abstract] Introduction
 > This page includes a number of initial techniques and one-liners to help with privilege escalaton.
 
 ---
-
 ## Nmap
 ### Initial scan
 `nmap -vv -sV -sC -oN initial <ip>`
@@ -21,5 +21,3 @@
 
 # References
 - https://github.com/infosec-ucalgary/CTFCommands/blob/main/Pentesting.md
-
----

