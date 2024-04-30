@@ -1,4 +1,5 @@
 ---
+description: "Solutions for challenges from ENOWARS 7."
 tags:
   - ctf-writeup
 date: 2023-07-22

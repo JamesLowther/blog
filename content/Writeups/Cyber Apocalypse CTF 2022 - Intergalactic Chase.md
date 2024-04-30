@@ -1,4 +1,5 @@
 ---
+description: "Solutions for challenges from Cyber Apocalypse CTF 2022 - Intergalactic Chase"
 tags:
   - ctf-writeup
 date: 2022-05-15

@@ -1,4 +1,5 @@
 ---
+description: "Solutions for challenges from Real World CTF 2022."
 tags:
   - ctf-writeup
 date: 2022-01-22

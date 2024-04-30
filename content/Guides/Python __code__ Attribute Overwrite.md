@@ -1,4 +1,5 @@
 ---
+description: "The `__code__` attribute of a Python function can be overwritten, allowing us to break out of a constrained namespace and use an elevated one."
 tags:
   - guide
 date: 2022-05-15*

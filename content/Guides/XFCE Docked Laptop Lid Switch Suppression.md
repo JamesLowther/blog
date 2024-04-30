@@ -1,4 +1,5 @@
 ---
+description: "This is a guide for fixing laptop lid switch suppression when connected to a dock when running XFCE."
 tags:
   - guide
 date: 2023-06-15*

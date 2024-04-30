@@ -1,4 +1,5 @@
 ---
+description: "This page includes a number of initial techniques and one-liners to help with privilege escalation."
 tags:
   - guide
 date: 2022-04-12

@@ -1,4 +1,5 @@
 ---
+description: "Solutions for challenges from magpieCTF 2021."
 tags:
   - ctf-writeup
 date: 2021-02-19

@@ -1,4 +1,5 @@
 ---
+description: "A LED matrix visualization to display the current position of the ISS in real-time.
 tags:
   - project
 date: 2021-09-14

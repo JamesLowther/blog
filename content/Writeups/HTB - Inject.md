@@ -1,4 +1,5 @@
 ---
+description: "Walkthrough for the Hack The Box box Inject."
 tags:
   - htb-writeup
 date: 2023-07-02

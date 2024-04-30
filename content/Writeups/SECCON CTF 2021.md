@@ -1,4 +1,5 @@
 ---
+description: "Solutions for challenges from SECCON CTF 2021."
 tags:
   - ctf-writeup
 date: 2021-12-11

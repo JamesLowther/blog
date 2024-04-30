@@ -1,10 +1,11 @@
 ---
+description: "This page includes a number of initial techniques and one-liners to help with enumeration escalaton."
 tags:
   - guide
 date: 2022-04-15
 ---
 > [!Abstract] Introduction
-> This page includes a number of initial techniques and one-liners to help with privilege escalaton.
+> This page includes a number of initial techniques and one-liners to help with enumeration.
 
 ---
 # Nmap
