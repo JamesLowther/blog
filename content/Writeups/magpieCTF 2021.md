@@ -140,7 +140,7 @@ The website appears to be a renderer for LaTeX code. Writing LaTex and clicking 
 3. The `/` character however can be isolated from `index.html` using the `\StrMid` function from the `xstring` package. By getting the `/` character from `index.html`, we can use it to build our path and bypass the blacklisted characters filter.
 4. Using this we can write the following LaTeX code that will build the path and read the flag:
 
-```LaTeX
+```latex
 \documentclass{minimal}
 
 % The xstring package allows us to use \StrMid
