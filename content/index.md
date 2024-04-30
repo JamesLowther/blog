@@ -1,9 +1,6 @@
 ---
 title: Welcome!
-description: "My name is James Lowther, and welcome to my blog! This is a space where I'll post interesting technical projects I'm working on, write-ups from security competitions, tech-related guides/walkthroughs, and any other thoughts."
 ---
-**Hello!**
-
 My name is **James Lowther**, and welcome to my blog!
 
 This is a space where I'll post interesting technical projects I'm working on, write-ups from security competitions, tech-related guides/walkthroughs, and any other thoughts.
