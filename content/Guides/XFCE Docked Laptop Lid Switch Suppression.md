@@ -16,9 +16,8 @@ There are a few conflicting services that need config changes to get this workin
 
 # Disable UPower
 UPower looks to override the lid suppression settings of XFCE power manager so we need to disable it. Disabling this also looks to remove the lid settings in the Power Manager GUI.
-```
+```ini
 # /etc/UPower/UPower.conf
-
 IgnoreLid=true
 ```
 
@@ -39,9 +38,8 @@ systemd-inhibit --list --mode=block
 
 # Configure systemd-logind
 Configure systemd-logind to ignore the lid switch when an external monitor is connected (considered docked):
-```
+```ini
 # /etc/systemd/logind.conf
-
 HandleLidSwitchDocked=ignore
 ```
 
