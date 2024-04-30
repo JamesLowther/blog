@@ -1,8 +1,6 @@
 ---
 title: Welcome!
 ---
----
-
 **Hello!**
 
 My name is **James Lowther** and welcome to my blog!
@@ -14,4 +12,4 @@ Here's a cool project to get you started: [[Projects/LED Matrix - ISS Tracker|LE
 ---
 You can go back to the landing page at [www.jameslowther.com](https://www.jameslowther.com).
 
-This blog was created with [Quartz v4](https://quartz.jzhao.xyz/).
+This blog was created with [Quartz](https://quartz.jzhao.xyz/).
