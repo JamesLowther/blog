@@ -481,8 +481,8 @@ video {
   flex: 1 1 auto;
 }
 
-ul.overflow,
-ol.overflow {
+ul.overflow:not(.mobile-only *),
+ol.overflow:not(.mobile-only *) {
   max-height: 400;
   overflow-y: auto;
 
