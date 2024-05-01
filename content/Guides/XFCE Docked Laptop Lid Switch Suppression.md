@@ -32,7 +32,7 @@ xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/logind-handle-lid-sw
 xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/logind-handle-lid-switch
 ```
 
-Verify this change worked by ensuring systemd is not inhibited from `handle-lid-switch`. Look under "WHAT" column from the output of the following command:
+Verify this change worked by ensuring systemd is not inhibited from `handle-lid-switch`. Look under the `WHAT` column from the output of the following command:
 ```sh
 systemd-inhibit --list --mode=block
 ```

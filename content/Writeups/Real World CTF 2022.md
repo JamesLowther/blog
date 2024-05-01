@@ -9,7 +9,7 @@ Link: https://realworldctf.com/
 ***
 
 # Hack into Skynet
-**Category: web**
+**Category:** Web
 
 ## Description
 * Hack into skynet to save the world, which way do you prefer?

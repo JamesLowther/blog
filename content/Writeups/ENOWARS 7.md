@@ -16,7 +16,7 @@ date: 2023-07-22
 ---
 
 # asocialnetwork
-**Category: Web**
+**Category:** Web
 
 For this service, we were given a node.js application running through a Docker container. Only a single port, `3000`, was exposed. When navigating to the service in a web browser you are taken to a mock social media platform, complete with friend requests and a fully-functional chatroom.
 
@@ -309,7 +309,7 @@ if __name__ == "__main__":
 ---
 
 # oldschool
-**Category: Web**
+**Category:** Web
 
 This service was another web service running under Docker. It was written in PHP, a language I am less confident with, and was running on port `9080`. This service was meant to replicate a school management system, allowing students to enrol in courses and view their grades.
 

@@ -9,7 +9,7 @@ Link: https://ctf.seccon.jp/
 ***
 
 # Vulnerability
-**Category: web**
+**Category:** Web
 
 ## Description
 How many vulnerabilities do you know?
