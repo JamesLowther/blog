@@ -68,23 +68,20 @@ You may notice most of the subnets are deployed in the same AZ. This was intenti
 ## Routing
 For an A/D CTF, it is important that teams are not able to infer where traffic is coming from. This means that when a vulnbox receives a packet, it should be impossible to tell if that packet originated from a checker, or from another team's vulnbox. This is to prevent teams from blocking traffic from other teams, thus protecting their flags, while only allowing the checkers through.
 
-I'll speak more about how we implemented this in the [Router](#Router) section of this post, but most of this was handed using custom route tables on the subnets, a gateway load balancer, and iptables.
+I'll speak more about how we implemented this in the [Router](#router) section of this post, but most of this was handed using custom route tables on the subnets, a gateway load balancer, and iptables.
 ## Internet
 Team connectivity from the internet was enabled through load-balanced OpenVPN servers in a public subnet. We also had a NAT gateway to easily handle egress internet access from EC2s in our private subnets.
 
 We have two public internet subnets because it is the minimum number required to deploy an application load balancer.
 
-> [!info] V1 Diagram
+## V1 Diagram
 The complexity increased dramatically as we added more and more into the scope of what we wanted to do. For example, here was the V1 diagram:
 ![[Pasted image 20240513150030.png]]
 # Game server
- The game server we went with was created and documented by the [FAUSTCTF](https://faustctf.net/) team. It is by far the best A/D CTF platform we have seen, and was rock-solid stable for our competition. Check out the [documentation](https://ctf-gameserver.org/) and [source code](https://github.com/fausecteam/ctf-gameserver) for this project. They did a fantastic job, and a lot of the success of **Pls, I Want In** can be attributed to them.
-
-The game server is split into 4 pieces:
+ The game server we went with was created and documented by the [FAUST CTF](https://faustctf.net/) team. It is by far the best A/D CTF platform we have seen, and was rock-solid stable for our competition. Check out the [documentation](https://ctf-gameserver.org/) and [source code](https://github.com/fausecteam/ctf-gameserver) for this project. They did a fantastic job, and a lot of the success of **Pls, I Want In** can be attributed to them.
 ## Web interface
 The front-end for the game server is a standard Django application. We hosted it using uWSGI in master mode, with 4 processes with 2 threads each.
 
-`uwsgi.ini`
 ```ini
 [uwsgi]
 uid = www-data
@@ -112,10 +109,11 @@ buffer-size = 16384
 > [!Tip]
 > It was important we increased the `buffer-size` up to `16384`, as we would get 500 errors without it.
 
-This uWSGI process created a unix socket that was reverse-proxied with nginx.
-
+This uWSGI process created a unix socket that was reverse-proxied with nginx. To simplify TLS, we provisioned a wildcard certificate for `*.plsiwant.in` using AWS ACM which was then attached to an application load balancer. The target group for that ALB then forwarded traffic to the nginx server over HTTP.
+### Database
+The database we used was a simple PostgreSQL instance running under Docker. To configure the database users and permissions we heavily referenced the database roles from the FAUST [ctf-gameserver-ansible](https://github.com/fausecteam/ctf-gameserver-ansible) repository.
 ### Caching
-The Django application was configured to interface with a local PostgreSQL and memcached. The caching backend we initially chose was was `PyLibMCCache`, but we started seeing a large number of 500 errors even with a tiny amount of traffic. We ran a load test and compared it with the `PyMemcacheCache` backend.
+The Django application was configured to use memcached for it's caching backend. The backend we initially chose was was `PyLibMCCache`, but we started seeing a large number of 500 errors even with a tiny amount of traffic. We ran a load test and compared it with the `PyMemcacheCache` backend.
 
 Run #1 was `PyLibMCCache` and Run #2 was `PyMemcacheCache`:
 
@@ -124,13 +122,79 @@ Run #1 was `PyLibMCCache` and Run #2 was `PyMemcacheCache`:
 > [!Error]
 > `PyLibMCCache` had a nearly 37% failure rate! Switching to `PyMemcacheCache` solved nearly all of our performance issues with the web server.
 
+The lesson here was to load test **everything**, as issues will pop up even on the smallest parts of your infra.
 ## Controller
-
+The controller service is in charge of changing the game tick, and coordinating the flags for each service. This ran as a single service on our game server EC2 instance and required access to the database.
 ## Checker
+The checkers are responsible for checking team service functionality, placing new flags, and verifying previously placed flags are still available. We ran the checker on multiple EC2s to ensure we could quickly recover from instance failure. We used the `CTF_CHECKERCOUNT` environment variable to ensure team checks were equally distributed across each server. With this implementation we could easily scale the competition size by increasing the number of checker servers.
 
+All of our checkers were written in Python and had their own virtual environment with any custom modules that were requested. The checkers require access to the database to function.
 ## Submission
-# OpenVPN
+The submission endpoint was found at `submit.plsiwant.in` on port `1337` and is a simple TCP endpoint that has a protocol for accepting flags from teams, allowing them to gain points. We ran three submission services on the game server EC2, and used nginx to transparently load balance packets across them.
 
+> [!Info]
+> The submission server used the third octet in the source IP to determine who to give points to. For example, a team with a net number of 3 would submit flags from an IP `X.X.3.X`. This could be from their vulnbox, or locally from their OpenVPN connection.
+
+With the submission servers running on ports `10000`, `10001`, and `10002`, the nginx configuration looked like this:
+```nginx
+stream {
+	upstream stream_backend {
+		server 127.0.0.1:10000;
+		server 127.0.0.1:10001;
+		server 127.0.0.1:10002;
+	}
+
+	server {
+		listen 1337;
+		proxy_bind $remote_addr transparent;
+		proxy_pass stream_backend;
+	}
+}
+```
+
+We then added the following IP rules to transparently proxy the packets to nginx:
+```bash
+ip route add local 0.0.0.0/0 dev lo table 100
+
+ip rule add from 127.0.0.1/32 ipproto 6 sport 10000 iif lo lookup 100
+ip rule add from 127.0.0.1/32 ipproto 6 sport 10001 iif lo lookup 100
+ip rule add from 127.0.0.1/32 ipproto 6 sport 10002 iif lo lookup 100
+```
+
+The submission service is one we could run across multiple servers, but it was so performant we didn't feel the need to.
+# OpenVPN
+It was important that an OpenVPN server could fail completely and the game would still run. This led us to figure out how to load balance teams across OpenVPN instances, allowing us to scale out dynamically if our CPU load got too high.
+
+> [!Info] VPN Services
+> Each team had their own OpenVPN service running on each VPN server, with their own interface. For example, team 7 had an OpenVPN service running on each VPN server that used `tun7` as its interface.
+
+One obvious solution to the load problem this is to shard teams across multiple instances, but this doesn't solve the problem of high availability. If 1/4 of all teams are sharded on a single VPN instance, and that instance fails, then those users will experience downtime. To solve this, we used DNS-based load balancing and multiple OpenVPN servers. By having a DNS A-record with multiple addresses, OpenVPN will randomly choose one of them each time the domain is resolved.
+
+OpenVPN has a good, but short, [article on load balancing](https://openvpn.net/community-resources/implementing-a-load-balancing-failover-configuration/) that recommends putting identical configuration files on each server, but changing the virtual address pool. This is something we didn't want to do, as it would increase the chance of CIDR overlap issues on competitors local networks. We advertised that the route we would be pushing over to people's locals was `10.66.X.0/24`, with `X` being their team net number, and I wanted that to be the same regardless of which of our VPN servers they were connected to. We didn't want VPN A to push `10.66.X.0/24` and VPN B to push `10.67.X.0/24`.
+
+This introduces a new problem. If each virtual IP pool is the same, how do we ensure that a connection sent from VPN server A is route back to VPN server A? The obvious answer is to add some sort of SNAT on each server, but due to the unique nature of A/D CTFs, we had to keep the third octet static for each team to support proper flag submission.
+
+> [!Warning] Remember
+> The third octet of a packet's source is used by the submission server to determine who to give flags to. A request sent from `10.66.10.6/32` with a valid flag should give points to team 10. If we NAT the packets, all of the packet sources will be the same.
+
+To solve this, we used a iptables rule type known as NETMAP. NETMAP builds a one-to-one translation for an entire subnet, allowing us to change the first 16 bits in the source address while leaving the bottom 16 untouched. It can sort of be thought of as a SNAT, but only for the first 16 bits.
+
+- VPN A: `10.66.X.0/24` -> `10.80.X.0/24`
+- VPN B: `10.66.X.0/24` -> `10.81.X.0/24`
+- VPN C: `10.66.X.0/24` -> `10.82.X.0/24`
+
+For example, for a client from team 7 to VPN B their packets from `tun7` would have a source that might look like `10.66.7.20`. When that packet leaves VPN B, the packet would be translated to `10.81.7.20`.
+
+For anything that needs to communicate to the VPN servers, we can then add routes in the route table for `10.80.0.0/16`, `10.81.0.0/16`, and `10.82.0.0/16` to the ENIs for VPN A, VPN B, and VPN C, respectively.
+
+![[VPN Scaling-Scalable.png]]
+
+To ensure that we have identical OpenVPN configs on each server we used a AWS Elastic File System (EFS) network file share. This made is trivial to share the OpenVPN server config files across EC2s.
+
+> [!Success]
+> With this implementation, we could load balance OpenVPN connections across multiple servers completely transparently to the end user. We could increase the number of servers to handle increased load without having to manually shard connections.
+> 
+> One improvement would be to add a network load balancer in front of our OpenVPN servers. This would reduce the number of public IPs required when scaling.
 # Router
 
 # Vulnbox
