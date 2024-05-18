@@ -77,9 +77,9 @@ We have two public internet subnets because it is the minimum number required to
 ## Net number
 The net number is a unique number assigned to a team to uniquely identify their traffic. As a convention, the third octet of the IPv4 was used for the net number. For example, a team with net number 7 would have the following IPs:
 - Team vulnbox: `10.32.7.10/32`
-- Team VPN: `10.66.7.0/24
+- Team VPN: `10.66.7.0/24`
 
-We use this number to identify which team is sending what traffic. It is also used to determine what team to give points to when players submit flags to the submission server.`
+We use this number to identify which team is sending what traffic. It is also used to determine what team to give points to when players submit flags to the submission server.
 ## V1 Diagram
 The complexity increased dramatically as we added more and more into the scope of what we wanted to do. For example, here was the V1 diagram:
 ![[Pasted image 20240513150030.png]]
@@ -128,13 +128,13 @@ Run #1 was `PyLibMCCache` and Run #2 was `PyMemcacheCache`:
 > [!Error]
 > `PyLibMCCache` had a nearly 37% failure rate! Switching to `PyMemcacheCache` solved nearly all of our performance issues with the web server.
 
-The lesson here was to load test **everything**, as issues will pop up even on the smallest parts of your infra.
+The lesson here was to load test **everything**, as issues will pop up even on the smallest parts of your infrastructure.
 ## Controller
 The controller service is in charge of changing the game tick, and coordinating the flags for each service. This ran as a single service on our game server EC2 instance and required access to the database.
 ## Checker
 The checkers are responsible for checking team service functionality, placing new flags, and verifying previously placed flags are still available. We ran the checker on multiple EC2s to ensure we could quickly recover from instance failure. We used the `CTF_CHECKERCOUNT` environment variable to ensure team checks were equally distributed across each server. With this implementation we could easily scale the competition size by increasing the number of checker servers.
 
-All of our checkers were written in Python and had their own virtual environment with any custom modules that were requested. The checkers require access to the database to function.
+All of our checkers were written in Python and had their own virtual environment with any custom modules that were requested by the challenge developer. The checkers require access to the database to function.
 ## Submission
 The submission endpoint was found at `submit.plsiwant.in` on port `1337` and is a simple TCP endpoint that has a protocol for accepting flags from teams, allowing them to gain points. We ran three submission services on the game server EC2, and used nginx to transparently load balance packets across them.
 
@@ -167,12 +167,12 @@ ip rule add from 127.0.0.1/32 ipproto 6 sport 10001 iif lo lookup 100
 ip rule add from 127.0.0.1/32 ipproto 6 sport 10002 iif lo lookup 100
 ```
 
-The submission service is one we could run across multiple servers, but it was so performant we didn't feel the need to.
+The submission could have been run across multiple servers, but it was so performant we didn't feel the need to.
 # OpenVPN
 ## Configs
-The client and server OpenVPN configs were fairly standard. We used Easy-RSA to generate the PKI infrastructure and created a separate key and config for each team. I can't explain this better than the thousand other blogs about setting up OpenVPN, so I will defer you to [this one](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-configure-an-openvpn-server-on-ubuntu-22-04).
+The client and server OpenVPN configs were fairly standard. We used Easy-RSA to generate the PKI infrastructure and created a separate key and config for each team. I can't explain this any better than the thousand other blogs about setting up OpenVPN, so I will defer you to [this one](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-configure-an-openvpn-server-on-ubuntu-22-04).
 
-We used an OpenVPN server directive called `ccd-exclusive` as our authentication method. Each team got their own key from the CA with a unique common name. When then the client tries to connect, the OpenVPN service for their team would check to ensure there was a file with the same name as the common name in the `client-config-dir` directory. If not, the connection would be denied.
+We used an OpenVPN server directive called `ccd-exclusive` as our authentication method. Each team's client config got their own cert from the CA with a unique common name. When then the client tries to connect, the OpenVPN service for their team would check to ensure there was a file with the same name as the common name in the `client-config-dir` directory. If not, the connection would be denied.
 
 To ensure that multiple teams could connect using the same client config, it was important that we set the `duplicate-cn` directive on the server. Besides these changes, we then pushed the routes for the team VPC (`10.32.0.0/16`), the subnet for the submission server (`10.50.10.0/24`), and the virtual VPN CIDR (`10.66.X.0/24`, where `X` is the team's net number) to the clients.
 
@@ -183,25 +183,25 @@ It was important that an OpenVPN server could fail completely and the game would
 
 One obvious solution to the load problem this is to shard teams across multiple instances, but this doesn't solve the problem of high availability. If 1/4 of all teams are sharded on a single VPN instance, and that instance fails, then those users will experience downtime. To solve this, we used DNS-based load balancing and multiple OpenVPN servers. By having a DNS A-record with multiple addresses, OpenVPN will randomly choose one of them each time the domain is resolved.
 
-OpenVPN has a good, but short, [article on load balancing](https://openvpn.net/community-resources/implementing-a-load-balancing-failover-configuration/) that recommends putting identical configuration files on each server, but changing the virtual address pool. This is something we didn't want to do, as it would increase the chance of CIDR overlap issues on player's local networks. We advertised that the route we would be pushing over to people's locals was `10.66.X.0/24`, with `X` being their team net number, and I wanted that to be the same regardless of which of our VPN servers they were connected to. We didn't want VPN A to push `10.66.X.0/24` and VPN B to push `10.67.X.0/24`.
+OpenVPN has a good, but short, [article on load balancing](https://openvpn.net/community-resources/implementing-a-load-balancing-failover-configuration/) that recommends putting identical configuration files on each server, but changing the virtual address pool. This is something we didn't want to do, as it would increase the chance of CIDR overlap issues on player's local networks. We advertised that the VPN route we would be pushing over to people's locals was `10.66.X.0/24`, with `X` being their team net number, and I wanted that to be the same regardless of which of our VPN servers they were connected to. We didn't want VPN A to push `10.66.X.0/24` and VPN B to push `10.67.X.0/24`.
 
-This introduces a new problem. If each virtual IP pool is the same, how do we ensure that a connection sent from VPN server A is route back to the same server? The obvious answer is to add some sort of SNAT on each server, but due to the unique nature of A/D CTFs, we had to keep the third octet static for each team to support proper flag submission.
+This introduced a new problem. If each virtual IP pool is the same, how do we ensure that a connection sent from VPN server A is routed back to the same server? The obvious answer is to add some sort of SNAT on each server, but due to the unique nature of A/D CTFs, we had to keep the third octet static for each team to support proper flag submission.
 
 > [!Warning] Remember
 > The third octet of a packet's source is the team's net number, and is used by the submission server to determine who to give points to. A request sent from `10.66.10.6/32` with a valid flag should give points to team 10. If we NAT the packets, all of the packet sources will be the same.
 
-To solve this, we used a iptables rule type known as NETMAP. NETMAP builds a one-to-one translation for an entire subnet, allowing us to change the first 16 bits in the source address while leaving the bottom 16 untouched. It can sort of be thought of as a SNAT, but only for the first 16 bits.
+To solve this, we used a iptables rule type known as `NETMAP`. `NETMAP` builds a one-to-one translation for an entire subnet, allowing us to change the first 16 bits in the source address while leaving the bottom 16 untouched. It can be thought of as a SNAT, but only for the first 16 bits.
 
 - VPN A: `10.66.X.0/24` -> `10.80.X.0/24`
 - VPN B: `10.66.X.0/24` -> `10.81.X.0/24`
 - VPN C: `10.66.X.0/24` -> `10.82.X.0/24`
 
-For example, for a client from team 7 to VPN B their packets from `tun7` would have a source that might look like `10.66.7.20`. When that packet leaves VPN B, the packet would be translated to `10.81.7.20`.
+For example, a client from team 7 connecting to VPN B would have their packets from `tun7` have a source like `10.66.7.20`. When that packet leaves VPN B, the packet would be translated to `10.81.7.20`, preserving their net number.
 
 > [!Info] VPN CIDR
-> We used the range `10.80.0.0/13` to match all VPN traffic. This range gave us the flexibility to scale out to 8 VPN servers, if need be.
+> We used the range `10.80.0.0/13` to match all VPN traffic. This range gave us the flexibility to scale out to a max of 8 VPN servers, if need be.
 
-For anything that needs to communicate to the VPN servers, we can then add routes in the route table for `10.80.0.0/16`, `10.81.0.0/16`, and `10.82.0.0/16` to the ENIs for VPN A, VPN B, and VPN C, respectively.
+For anything that needs to communicate to the VPN servers, we can then add routes in the route tables for `10.80.0.0/16`, `10.81.0.0/16`, and `10.82.0.0/16` to the ENIs for VPN A, VPN B, and VPN C, respectively.
 
 ![[VPN Scaling-Scalable.png]]
 
@@ -210,7 +210,7 @@ To ensure that we have identical OpenVPN configs on each server we used a AWS El
 > [!Success]
 > With this implementation, we could load balance OpenVPN connections across multiple servers completely transparently to the end user. We could increase the number of servers to handle increased load without having to manually shard connections.
 > 
-> One improvement would be to add a network load balancer in front of our OpenVPN servers. This would reduce the number of public IPs required when scaling, as by default AWS limits the amount of EIPs on an account to 5
+> One improvement would be to add a network load balancer in front of our OpenVPN servers. This would reduce the number of public IPs required when scaling, as by default AWS limits the amount of EIPs on an account to just 5.
 # Router
 The router is one of the most critical pieces of infrastructure for an A/D CTF. All packets relating to the game must be send through the router. The router does the following:
 
@@ -218,13 +218,29 @@ The router is one of the most critical pieces of infrastructure for an A/D CTF. 
 2. Acts as a firewall.
 3. Limits bandwidth.
 4. Acts as a central point for monitoring.
+
+## Load balancing
+Load balancing the router was something I really wanted to do, because it gave us lots of flexibility to make changes to our infrastructure during the competition without causing major downtime.
+
+To do this, we used an AWS gateway load balancer (GWLB), and AWS PrivateLink. PrivateLink allowed us to create gateway load balancer endpoints (GWLBE) in the two VPCs, which could be set as the destination for inter-team packets in each subnet's route tables. The GWLBEs would then send these packets to the gateway load balancer, who would encapsulate the packet in the GENEVE protocol and send it to a target group on UDP port 6081.
+
+In order to handle these packets, we used an AWS-provided solution called [gwlbtun](https://github.com/aws-samples/aws-gateway-load-balancer-tunnel-handler). This is a service that listens for GENEVE packets on port 6081, unencapsulates them, and sends them to a virtual interface with the naming convention `gwi-<gwlbe-eni-id>`. Once these packets are processed by gwlbtun, we can handle them as normal using the standard Linux network stack.
+
+[This article by AWS](https://aws.amazon.com/blogs/networking-and-content-delivery/how-to-integrate-linux-instances-with-aws-gateway-load-balancer/) explains this solution in far more detail. It also provides this handy diagram explaining how it works:
+![[Pasted image 20240518134509.png]]
+
+> [!Success]
+> With this solution, we could scale the router horizontally to support any increase of load. We weren't limited to vertical scaling and didn't have a single point of failure. Because packet flows are distributed equally between routers in the target group, if one of our routers failed, or if we needed to restart it for maintenance, the impact to the game will be minimal.
+> 
+> I was incredibly proud of this solution, because it added fault tolerance to the infrastructure that is traditionally very static.
+
 ## Anonymizing traffic
 It is important that network traffic is anonymized in order for the game to run smoothly. This is primarily to prevent teams from identifying the checkers.
 
 > [!Warning] Remember
 > The checkers are what check team services for SLA, as well as adding/checking flags.
 
-If a team is able to identify that the checker, the could easily add a firewall on their vulnbox to only allow traffic from that source. This would mean the checker would successfully verify the service as working, but no team would be able to exploit it. This is against the point of the game.
+If a team is able to identify that the checker, the could easily add a firewall on their vulnbox to only allow traffic from that IP source. This would mean the checker would successfully verify the service as working, but no other team would be able to exploit it. This is against the point of the game.
 
 ### MASQ
 To solve this, we used a simple `MASQUERADE` rule in iptables to apply an `SNAT` to the outgoing traffic. This ensured that all traffic appeared to be coming from a single source, i.e. the router's IP. We also added a mangle rule to set the TTL of the packet to be 30, ensuring that differences in hops wouldn't give away a packet's origin.
@@ -341,12 +357,12 @@ This sort of worked, but was very inconsistent on limiting the throughput. [This
 ### TC
 TC (Traffic Control) is the solution we ultimately ended up going with. TC works by shaping traffic by using queues (qdiscs), which will delay packet transmission instead of just dropping the packets.
 
-We used a [hierarchy token bucket](https://www.man7.org/linux/man-pages/man8/tc-htb.8.html) qdisc with a class for each team, specifying the bandwidth limit to be 50mbit/s. We then used filters to classify packets into the classes based on their third-octet net number. We used a SFQ (stochastic fairness queueing) qdisc to ensure that bandwidth between each team's clients was evenly distributed. 
+We used a [HTB (hierarchy token bucket)](https://www.man7.org/linux/man-pages/man8/tc-htb.8.html) qdisc with a class for each team, specifying the bandwidth limit to be 50mbit/s. We then used filters to classify packets into the classes based on their third-octet net number. We used a [SFQ (stochastic fairness queueing)](https://www.man7.org/linux/man-pages/man8/tc-sfq.8.html) qdisc to ensure that bandwidth between each team's clients was evenly distributed. 
 
 > [!Success] Per-team limiting
-What was cool about this solution is it allowed us to limit bandwidth not just per-IP, but per-team. This means that if the vulnbox was using 20mbit/s worth of bandwidth, then VPN clients could share only 30mbit/s between themselves. This gave me peace of mind, as I could now calculate the worst-case egress charge from AWS and adjust the bandwidth accordingly.
+> What was cool about this solution is it allowed us to limit bandwidth not just per-IP, but per-team. This means that if the vulnbox was using 20mbit/s worth of bandwidth, then VPN clients for that team could share only 30mbit/s between themselves. This gave me peace of mind, as I could now calculate the worst-case egress charge from AWS and adjust the bandwidth accordingly.
 
-One major problem with TC ingress shaping is that it does it's processing between the iptables and the network interface. This means that trying to filter packets into classes using just the source IP will not work, because by the time the packet reaches TC it has already been MASQed by iptables. If all packets have the same source IP, how do you classify them?
+One major problem with TC ingress shaping is that it does its processing between the iptables and the network interface. This means that trying to filter packets into classes using just the source IP will not work, because by the time the packet reaches TC it has already been MASQed by iptables. If all packets have the same source IP, how do you classify them?
 
 ![[tc-iptables.png]]
 
@@ -362,8 +378,8 @@ tc class add dev ens6 parent 9999: classid 9999:0 htb rate 1gbit
 
 # Create QOS chain for FORWARD and OUTPUT chains
 iptables -t mangle -N QOS
-iptables -t mangle -A FORWARD -o "$ROUTER_IF" -j QOS
-iptables -t mangle -A OUTPUT -o "$ROUTER_IF" -j QOS
+iptables -t mangle -A FORWARD -o ens6 -j QOS
+iptables -t mangle -A OUTPUT -o ens6 -j QOS
 
 # Add CONNMARK restore-mark on QOS chain
 iptables -t mangle -A QOS -j CONNMARK --restore-mark
@@ -373,19 +389,22 @@ tc class add dev ens6 parent 9999:0 classid 9999:1 htb rate 50mbit
 tc qdisc add dev ens6 parent 9999:1 handle 1: sfq perturb 10
 tc filter add dev ens6 parent 9999: protocol ip handle 1 fw flowid 9999:1
 iptables -t mangle -A QOS -s '10.32.1.0/24' -m mark --mark 0 -j MARK --set-mark 1
+iptables -t mangle -A QOS -s '10.80.1.0/24' -m mark --mark 0 -j MARK --set-mark 1
+iptables -t mangle -A QOS -s '10.81.1.0/24' -m mark --mark 0 -j MARK --set-mark 1
 
 # Team 2
 tc class add dev ens6 parent 9999:0 classid 9999:2 htb rate 50mbit
 tc qdisc add dev ens6 parent 9999:2 handle 2: sfq perturb 10
 tc filter add dev ens6 parent 9999: protocol ip handle 2 fw flowid 9999:2
 iptables -t mangle -A QOS -s '10.32.2.0/24' -m mark --mark 0 -j MARK --set-mark 2
+iptables -t mangle -A QOS -s '10.80.2.0/24' -m mark --mark 0 -j MARK --set-mark 2
+iptables -t mangle -A QOS -s '10.81.2.0/24' -m mark --mark 0 -j MARK --set-mark 2
 
 # ... add all teams
 
 # Add CONNMARK save-mark on QOS chain
 iptables -t mangle -A QOS -j CONNMARK --save-mark
 ```
-
 # Vulnbox
 
 # Pipelining
