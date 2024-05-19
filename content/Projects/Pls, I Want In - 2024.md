@@ -405,10 +405,98 @@ iptables -t mangle -A QOS -s '10.81.2.0/24' -m mark --mark 0 -j MARK --set-mark 
 # Add CONNMARK save-mark on QOS chain
 iptables -t mangle -A QOS -j CONNMARK --save-mark
 ```
-# Vulnbox
+# Vulnbox & Services
+The vulnboxes are the servers that teams are given full root access to. They contain the contain all of the source code for the vulnerable services, and that's about it. SSH was configured to allow password-based authentication, and the password for the `admin` user was changed to one that could be distributed to teams. The vulnboxes were based off of Debian 12.
 
-# Pipelining
+## Vulnbox workflow
+The vulnbox was one of the main pieces of infrastructure that was fully pipelined to the point where we created golden AMIs. In a separate repo, we created a GitHub Actions workflow that would kick off a Packer build using the `amazon-ebs` builder. This would create a temporary EC2 server, provision it using an ansible playbook, then would take an AMI (Amazon Machine Image). When we then created the full CTF infrastructure, we would create the vulnboxes dynamically using the latest AMI version, ensuring each team's vulnbox was completely identical.
+
+When creating the vulnbox in terraform, we used cloud-init to dynamically set the password:
+```hcl
+user_data = <<-EOF
+#cloud-config
+ssh_pwauth: true
+password: ${bcrypt(var.vulnbox_password)}
+chpasswd:
+  expire: false
+
+runcmd:
+  - systemctl reload ssh.service
+EOF
+```
+
+> [!Warning] SSH
+> The `systemctl reload ssh.service` was required to fix a strange bug where about 30% of the time cloud-init would successfully configure OpenSSH to allow password authentication in the sshd config file, but it would not correctly restart the service. By explicitly restarting sshd, it seemed to fix the problem.
+
+> [!Info] Encryption
+> We also added an encryption feature to the vulnbox pipeline. If toggled on, the ansible playbook would encrypt all of the challenge code on the server before taking an AMI. We could extend this in the future to allow team's to host their own vulnbox, and then decrypting the challenges when we release the key when the game starts.
+## Service workflow
+Each service had its own repo with a `challenge/` and `checker/` directory, and a `metadata.yml` file. When changes were pushed to the main branch, a GitHub Actions run would tar and gzip the challenge and checker directories, and push the artifacts to an S3 bucket. The `metadata.yml` would be uploaded as well.
+
+![[challenge-artifact-pipeline.png]]
+
+The metadata would look something like this:
+```yaml
+challenge_name: Example Challenge
+challenge_slug: example-challenge
+
+checker:
+  apt_packages: []
+  pip_packages: []
+```
+
+Our ansible playbooks then had tasks to pull the required artifacts down from S3 to then be provisioned on the instance. For example, the vulnbox role would pull the challenge artifacts down, unzip them, and run an `init.sh` script to initialize the service with Docker Compose. The checker roles would pull the checker artifact, install the apt/pip packages, and start the checker service.
+
+This workflow made it very flexible when developing challenges. We wanted the CTF infrastructure to be service-agnostic. To create a new service, all someone would need to do it create a new repo off of the template repo, add their code, and know it would work with the primary CTF infrastructure.
+
+# Automation
+Automation, automation, and more automation. Our full automation of all parts of the CTF was one of the main drivers of our success. Doing things manually becomes tedious and introduces human-error. By allowing us to easily create and destroy the entire CTF infrastructure, we could develop and iterate at a much faster pace.
+
+All of the AWS resources were fully managed through terraform modules. All of the VPCs, subnets, servers, security groups, peering connections, EFS shares, etc., were all written using terraform.
+
+## Terraform
+For deployment, we used [terragrunt](https://terragrunt.gruntwork.io/). I really like terragrunt, because it dramatically simplifies managing remote state. All state was stored in S3, with DynamoDB used as a state lock. We used the dependency feature of terragrunt to glue module inputs/outputs together. This approach let us have a separate state file for each module, instead of one massive one for all resources. This saved us a few times when our self-hosted GitHub runner ran out of memory and killed the terragrunt service. Instead of losing all the entirety of the state, we only lost the state for the module that was running at the time as it hadn't been pushed to S3.
+
+> [!Warning] Terragrunt
+> While I like a lot of what terragrunt offers, it's not perfect. Because terragrunt runs a separate terraform call of each module, if a higher-level module changes, it's harder to see the impact on dependent modules in the terraform plan.
+
+You might this goals that I had outlined before: create good documentation. Well... here is the documentation for our terraform modules:
+
+![[terraform-modules.png]]
+
+As you can see, I could use a bit of practice in structuring terraform code to not be so coupled. This architecture worked for the CTF, but it could use a lot of improvement.
+
+## Ansible
+All EC2 server configuration was done using ansible. Each server type had it's own playbook file, which would run tasks in a number of roles. We used the `group_vars/` convention in the inventory directory to overwrite variables on a case-by-case basis. By doing it this way, we could easily configure and deploy multiple environments using the same ansible code.
+
+Everything was configured in ansible, even services that didn't support configuration-as-code. For these instances, we wrote custom Python scripts that would be invoked by the `ansible.builtin.command` task, and would use the `requests` module to configure the services on our behalf using HTTP. A good portion of the game server role (specifically the database user configuration) was derived from the [ctf-gameserver-ansible](https://github.com/fausecteam/ctf-gameserver-ansible) repo provided by the FAUST team.
+
+EC2 instances were tagged using by their application and their environment, allowing us to use the AWS [dynamic inventory plugin](https://docs.ansible.com/ansible/latest/collections/amazon/aws/docsite/aws_ec2_guide.html) to generate our ansible inventory. We heavily utilized AWS SSM to allow ansible to connect to the EC2 without needing direct SSH access.
+
+> [!Info] Multiple environments
+> We were able to create a demo, test, practice, and production environment at the same time, just by changing a few ansible/terraform variables. This was important, as it allowed to develop on smaller EC2 instance sizes to save money, while being confident that the same code would run when we deployed to the larger production environment.
+
+## GitHub Actions
+Deploying and destroying the CTF could be done at the click of a button. We used a `workflow_dispatch` trigger with an environment variable to allow us to easily create the infrastructure from start to finish using the GitHub web UI:
+
+![[Pasted image 20240519111142.png]]
+
+![[Pasted image 20240519111249.png]]
+
+> [!Success] admin.ovpn
+> For convenience, we uploaded the administrative OpenVPN config file as an artifact on the GitHub Actions run. This config would bootstrap our access to the CTF services.
+
+This would send notifications to use through Discord using a simple webhook, making sure everyone was aware when a deploy was started, completed, cancelled, or failed.
+
+![[Pasted image 20240519111740.png]]
+
+Using GitHub Actions to start the deploy process gave developers who were less comfortable with cloud-technologies the confidence to deploy the CTF. This allowed them to do their development on a real-environment without any help from the infrastructure team.
+
+> [!Info] Cost saving
+>This level of automation didn't just save us time, but money as well. When we weren't developing the CTF, we could easily destroy all of the infrastructure, knowing that we could create it again from scratch when we needed it. We didn't have any sponsorship for this CTF, so this was important to us.
 
 # Monitoring
 
 # Game day
+
+# Improvements
