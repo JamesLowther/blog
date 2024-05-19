@@ -15,6 +15,8 @@ About 8 months ago, me and a group of friends decided to take a stab at developi
 
 This post will outline the successes and challenges we faced developing **Pls, I Want In**, while diving deep into the technical nitty-gritty that we had to learn in order to run the competition.
 
+![[logo-dark.webp]]
+
 # What is an attack-defence CTF
 
 > [!Tip]
@@ -178,7 +180,7 @@ To ensure that multiple teams could connect using the same client config, it was
 
 > [!Info] VPN Services
 > Each team had their own OpenVPN service running on each VPN server, with their own interface. For example, team 7 had an OpenVPN service running on each VPN server that used `tun7` as its interface. This was required to ensure that the third octet of each team's VPN IP matched their net number.
-## Scaling & Load balancing
+## Scaling & load balancing
 It was important that an OpenVPN server could fail completely and the game would still run. This led us to figure out how to load balance teams across OpenVPN instances, allowing us to scale out dynamically if our CPU load got too high.
 
 One obvious solution to the load problem this is to shard teams across multiple instances, but this doesn't solve the problem of high availability. If 1/4 of all teams are sharded on a single VPN instance, and that instance fails, then those users will experience downtime. To solve this, we used DNS-based load balancing and multiple OpenVPN servers. By having a DNS A-record with multiple addresses, OpenVPN will randomly choose one of them each time the domain is resolved.
@@ -279,7 +281,7 @@ X-Pls-Proxied: True
 ```
 
 Our HAProxy config looked something like this:
-```cfg
+```apache
 frontend http-frontend
 	mode http
 	bind 0.0.0.0:5001 transparent
@@ -409,9 +411,9 @@ iptables -t mangle -A QOS -j CONNMARK --save-mark
 The vulnboxes are the servers that teams are given full root access to. They contain the contain all of the source code for the vulnerable services, and that's about it. SSH was configured to allow password-based authentication, and the password for the `admin` user was changed to one that could be distributed to teams. The vulnboxes were based off of Debian 12.
 
 ## Vulnbox workflow
-The vulnbox was one of the main pieces of infrastructure that was fully pipelined to the point where we created golden AMIs. In a separate repo, we created a GitHub Actions workflow that would kick off a Packer build using the `amazon-ebs` builder. This would create a temporary EC2 server, provision it using an ansible playbook, then would take an AMI (Amazon Machine Image). When we then created the full CTF infrastructure, we would create the vulnboxes dynamically using the latest AMI version, ensuring each team's vulnbox was completely identical.
+The vulnbox was one of the main pieces of infrastructure that was fully pipelined to the point where we created golden AMIs. In a separate repo, we created a GitHub Actions workflow that would kick off a Packer build using the `amazon-ebs` builder. This would create a temporary EC2 server, provision it using an Ansible playbook, then would take an AMI (Amazon Machine Image). When we then created the full CTF infrastructure, we would create the vulnboxes dynamically using the latest AMI version, ensuring each team's vulnbox was completely identical.
 
-When creating the vulnbox in terraform, we used cloud-init to dynamically set the password:
+When creating the vulnbox in Terraform, we used cloud-init to dynamically set the password:
 ```hcl
 user_data = <<-EOF
 #cloud-config
@@ -429,7 +431,7 @@ EOF
 > The `systemctl reload ssh.service` was required to fix a strange bug where about 30% of the time cloud-init would successfully configure OpenSSH to allow password authentication in the sshd config file, but it would not correctly restart the service. By explicitly restarting sshd, it seemed to fix the problem.
 
 > [!Info] Encryption
-> We also added an encryption feature to the vulnbox pipeline. If toggled on, the ansible playbook would encrypt all of the challenge code on the server before taking an AMI. We could extend this in the future to allow team's to host their own vulnbox, and then decrypting the challenges when we release the key when the game starts.
+> We also added an encryption feature to the vulnbox pipeline. If toggled on, the Ansible playbook would encrypt all of the challenge code on the server before taking an AMI. We could extend this in the future to allow team's to host their own vulnbox, and then decrypting the challenges when we release the key when the game starts.
 ## Service workflow
 Each service had its own repo with a `challenge/` and `checker/` directory, and a `metadata.yml` file. When changes were pushed to the main branch, a GitHub Actions run would tar and gzip the challenge and checker directories, and push the artifacts to an S3 bucket. The `metadata.yml` would be uploaded as well.
 
@@ -445,36 +447,36 @@ checker:
   pip_packages: []
 ```
 
-Our ansible playbooks then had tasks to pull the required artifacts down from S3 to then be provisioned on the instance. For example, the vulnbox role would pull the challenge artifacts down, unzip them, and run an `init.sh` script to initialize the service with Docker Compose. The checker roles would pull the checker artifact, install the apt/pip packages, and start the checker service.
+Our Ansible playbooks then had tasks to pull the required artifacts down from S3 to then be provisioned on the instance. For example, the vulnbox role would pull the challenge artifacts down, unzip them, and run an `init.sh` script to initialize the service with Docker Compose. The checker roles would pull the checker artifact, install the apt/pip packages, and start the checker service.
 
 This workflow made it very flexible when developing challenges. We wanted the CTF infrastructure to be service-agnostic. To create a new service, all someone would need to do it create a new repo off of the template repo, add their code, and know it would work with the primary CTF infrastructure.
 
 # Automation
 Automation, automation, and more automation. Our full automation of all parts of the CTF was one of the main drivers of our success. Doing things manually becomes tedious and introduces human-error. By allowing us to easily create and destroy the entire CTF infrastructure, we could develop and iterate at a much faster pace.
 
-All of the AWS resources were fully managed through terraform modules. All of the VPCs, subnets, servers, security groups, peering connections, EFS shares, etc., were all written using terraform.
+All of the AWS resources were fully managed through Terraform modules. All of the VPCs, subnets, servers, security groups, peering connections, EFS shares, etc., were all written using Terraform.
 
 ## Terraform
-For deployment, we used [terragrunt](https://terragrunt.gruntwork.io/). I really like terragrunt, because it dramatically simplifies managing remote state. All state was stored in S3, with DynamoDB used as a state lock. We used the dependency feature of terragrunt to glue module inputs/outputs together. This approach let us have a separate state file for each module, instead of one massive one for all resources. This saved us a few times when our self-hosted GitHub runner ran out of memory and killed the terragrunt service. Instead of losing all the entirety of the state, we only lost the state for the module that was running at the time as it hadn't been pushed to S3.
+For deployment, we used [Terragrunt](https://terragrunt.gruntwork.io/). I really like Terragrunt, because it dramatically simplifies managing remote state. All state was stored in S3, with DynamoDB used as a state lock. We used the dependency feature of Terragrunt to glue module inputs/outputs together. This approach let us have a separate state file for each module, instead of one massive one for all resources. This saved us a few times when our self-hosted GitHub runner ran out of memory and killed the Terragrunt service. Instead of losing all the entirety of the state, we only lost the state for the module that was running at the time as it hadn't been pushed to S3.
 
 > [!Warning] Terragrunt
-> While I like a lot of what terragrunt offers, it's not perfect. Because terragrunt runs a separate terraform call of each module, if a higher-level module changes, it's harder to see the impact on dependent modules in the terraform plan.
+> While I like a lot of what Terragrunt offers, it's not perfect. Because Terragrunt runs a separate Terraform call of each module, if a higher-level module changes, it's harder to see the impact on dependent modules in the Terraform plan.
 
-You might this goals that I had outlined before: create good documentation. Well... here is the documentation for our terraform modules:
+You might this goals that I had outlined before: create good documentation. Well... here is the documentation for our Terraform modules:
 
 ![[terraform-modules.png]]
 
-As you can see, I could use a bit of practice in structuring terraform code to not be so coupled. This architecture worked for the CTF, but it could use a lot of improvement.
+As you can see, I could use a bit of practice in structuring Terraform code to not be so coupled. This architecture worked for the CTF, but it could use a lot of improvement.
 
 ## Ansible
-All EC2 server configuration was done using ansible. Each server type had it's own playbook file, which would run tasks in a number of roles. We used the `group_vars/` convention in the inventory directory to overwrite variables on a case-by-case basis. By doing it this way, we could easily configure and deploy multiple environments using the same ansible code.
+All EC2 server configuration was done using Ansible. Each server type had it's own playbook file, which would run tasks in a number of roles. We used the `group_vars/` convention in the inventory directory to overwrite variables on a case-by-case basis. By doing it this way, we could easily configure and deploy multiple environments using the same Ansible code.
 
-Everything was configured in ansible, even services that didn't support configuration-as-code. For these instances, we wrote custom Python scripts that would be invoked by the `ansible.builtin.command` task, and would use the `requests` module to configure the services on our behalf using HTTP. A good portion of the game server role (specifically the database user configuration) was derived from the [ctf-gameserver-ansible](https://github.com/fausecteam/ctf-gameserver-ansible) repo provided by the FAUST team.
+Everything was configured in Ansible, even services that didn't support configuration-as-code. For these instances, we wrote custom Python scripts that would be invoked by the `ansible.builtin.command` task, and would use the `requests` module to configure the services on our behalf using HTTP. A good portion of the game server role (specifically the database user configuration) was derived from the [ctf-gameserver-ansible](https://github.com/fausecteam/ctf-gameserver-ansible) repo provided by the FAUST team.
 
-EC2 instances were tagged using by their application and their environment, allowing us to use the AWS [dynamic inventory plugin](https://docs.ansible.com/ansible/latest/collections/amazon/aws/docsite/aws_ec2_guide.html) to generate our ansible inventory. We heavily utilized AWS SSM to allow ansible to connect to the EC2 without needing direct SSH access.
+EC2 instances were tagged using by their application and their environment, allowing us to use the AWS [dynamic inventory plugin](https://docs.ansible.com/ansible/latest/collections/amazon/aws/docsite/aws_ec2_guide.html) to generate our Ansible inventory. We heavily utilized AWS SSM to allow Ansible to connect to the EC2 without needing direct SSH access.
 
 > [!Info] Multiple environments
-> We were able to create a demo, test, practice, and production environment at the same time, just by changing a few ansible/terraform variables. This was important, as it allowed to develop on smaller EC2 instance sizes to save money, while being confident that the same code would run when we deployed to the larger production environment.
+> We were able to create a demo, test, practice, and production environment at the same time, just by changing a few Ansible/Terraform variables. This was important, as it allowed to develop on smaller EC2 instance sizes to save money, while being confident that the same code would run when we deployed to the larger production environment.
 
 ## GitHub Actions
 Deploying and destroying the CTF could be done at the click of a button. We used a `workflow_dispatch` trigger with an environment variable to allow us to easily create the infrastructure from start to finish using the GitHub web UI:
@@ -490,13 +492,107 @@ This would send notifications to use through Discord using a simple webhook, mak
 
 ![[Pasted image 20240519111740.png]]
 
-Using GitHub Actions to start the deploy process gave developers who were less comfortable with cloud-technologies the confidence to deploy the CTF. This allowed them to do their development on a real-environment without any help from the infrastructure team.
+Using GitHub Actions to start the deploy process gave developers who were less comfortable with cloud-technologies the confidence to deploy the CTF. This allowed them to do their development on a real environment without any help from the infrastructure team.
 
 > [!Info] Cost saving
 >This level of automation didn't just save us time, but money as well. When we weren't developing the CTF, we could easily destroy all of the infrastructure, knowing that we could create it again from scratch when we needed it. We didn't have any sponsorship for this CTF, so this was important to us.
 
 # Monitoring
+Deploying infrastructure is only half the battle. The other half is ensuring that your infrastructure/services are healthy. To do this we used [Grafana](https://grafana.com/) and [Prometheus](https://prometheus.io/), along with a variety of metric exporters, to monitor the health of the CTF. The FAUST game server is designed to expose Prometheus metrics, which influenced this choice.
+## Metrics
+In Prometheus, we used `ec2_sd_configs` to dynamically configure scrape targets, meaning we could scale our resources and be confident they would be monitored. Every server was running [node-exporter](https://github.com/prometheus/node_exporter) to provide the majority of our metrics. The router was also running [tc_exporter](https://github.com/fbegyn/tc_exporter) to provide metrics about our bandwidth limiting with TC.
+
+We used a number of pre-built node exporter dashboards in Grafana, such as [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/), to help us visualize the health of our servers. We built a custom dashboard using the metrics provided by the game server, to see how well the CTF services were running.
+
+### Game server dashboard
+![[Pasted image 20240519114655.png]]
+
+![[Pasted image 20240519114708.png]]
+
+![[Pasted image 20240519114719.png]]
+
+### Node exporter dashboard
+![[Pasted image 20240519114810.png]]
+
+![[Pasted image 20240519114825.png]]
+
+### TC dashboard
+![[Pasted image 20240519114933.png]]
+## Logs
+For checker logs, we used [Graylog](https://graylog.org/), as [recommended by the FAUST team](https://ctf-gameserver.org/observability/#checkers). The game server services integrate nicely with Graylog, making the monitoring of checker output trivial.
+
+![[Pasted image 20240519114331.png]]
+## Network
+To capture network traffic, we had a tcpdump running directly on the router instances. In addition we used VPC traffic mirroring to create packet mirrors to a server running [Arkime](https://arkime.com/) from our router ENIs. This allowed us to inspect individual packets for malicious attacks. We configured it to show us packet flows before the MASQ took place, so we could see exactly what each team was sending to each other.
+
+![[Pasted image 20240519114403.png]]
+
+> [!Info] Packet count
+> Arkime also allowed us to view connections as a graph, and configure the link weights based on amount of traffic. We could have theoretically used this as a way to identify DoS attacks, but none ended up happening.
+> ![[Pasted image 20240519114548.png]]
+
+We also utilized `iftop` on the router instances to monitor bandwidth:
+![[Pasted image 20240519115033.png]]
+# Practice environment
+3 days before the CTF we created a practice environment to give competitors the opportunity to test connecting to the VPN and logging in to their vulnbox. We had a dummy service running on the vulnbox that helped new players understand the A/D format.
+
+The practice environment was very beneficial to have, because it helped identify some minor issues that we were able to fix before the actual CTF. It also gave us confidence to know that our VPN configurations would work on a variety of operating systems/home networks.
 
 # Game day
+The actual CTF ran very smoothly. We had dramatically over-provisioned our servers for the amount of traffic (a good problem to have), and didn't have any critical failures. Teams seemed to enjoy the competition, so that was a good feeling after such a long development period.
+## AWS quotas
+About 4 days before the CTF, we hit a fairly major issue. I hadn't realized that for the past 8 months of development we were hitting 80% of the vCPU quota AWS had given to our account. The were only allowed to create 32 vCPUs worth of EC2s. When I went to create our production environment the deploy failed. I created a support ticket with AWS, pleading with them to increase our limit, but they were not able to action the request in time
 
+In the end, we were able to reduce the core count to use exactly 32 vCPUs. This allowed is to provision enough servers for each team's vulnbox, and create at least two routers and VPN servers.
+
+The lesson learned: **always double check your quotas in cloud environments!**
+
+## Screenshots
+Here are some screenshots of the services and scoreboards from the CTF:
+
+![[Pasted image 20240519121502.png]]
+
+![[Pasted image 20240519121534.png]]
+
+![[Pasted image 20240519121540.png]]
+
+![[Pasted image 20240519121558.png]]
+
+![[Pasted image 20240519121604.png]]
+
+![[Pasted image 20240519121615.png]]
+
+![[Pasted image 20240519121635.png]]
+th
 # Improvements
+If I were to run this again I would make the following improvements:
+1. Create AMIs for all EC2s.
+	- The majority of the time it took to deploy the CTF was spend provisioning the servers with Ansible.
+	- By creating AMIs, the servers could start pre-configured.
+	- Could also move a lot of these services to containers.
+2. Improve the structure of the Terraform modules
+	- Right now the modules are highly coupled and difficult to change.
+3. Add scaling support to the Django web-app and submission server.
+	- These services don't need a lot of computational power, so they don't need to be scaled for a successful CTF.
+	- I'm more interested in improving the fault tolerance here, allowing us to do server maintenance without affecting the game.
+4. Add scaling to our monitoring servers.
+	- This is less critical, as the game can run without the monitoring stack functioning correctly.
+5. Put a network load balancer in front of the OpenVPN servers.
+	- This is to allow us to scale without worrying about EIP quotas in AWS.
+	- Might increase cost slightly.
+6. Make the infrastructure multi-AZ.
+	- AZ failure is not high on our list of problems, but it would be nice to have in principle.
+7. Add support for self-hosted vulnboxes
+	- This is something FAUST CTF provides, and would offload a lot of the cost of the CTF to the competators.
+	- Would also help to prevent hitting vCPU quotas in AWS.
+8. Move to IPv6.
+	- Right now we can support up to 255 teams. Moving to IPv6 would remove this limitation.
+
+Lots to do... so little time.
+
+# Conclusion
+Overall, **Pls, I Want In** 2024 was a success. I learned a lot about how to build medium-scale applications in AWS, automation, pipelining, and working with a team. This was one of the most complicated and dynamic projects I have ever worked on, and it afforded me the opportunity to learn a tonne and improve my skills with cloud technologies.
+
+I wanted to thank all of the competitors for participating and being so encouraging. It was your support that made all of our hard work worth it. Thank you.
+
+![[sweater.webp]]
