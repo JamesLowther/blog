@@ -17,6 +17,32 @@ This post will outline the successes and challenges we faced developing **Pls, I
 
 ![[logo-dark.webp]]
 
+# Organizing team
+#### Anthony Loria
+- Developer of the challenge *Pilot*
+- Helped with CTF testing
+#### Alex Tenney
+- Developer of the challenge *Teliart*
+- Communications lead
+- Helped with CTF testing
+#### Elli Sengsavang
+- Developer of the challenge *secrets-pls*
+- Helped with CTF testing
+#### James Lowther (me!)
+- Infrastructure lead
+- Developer of the challenge *Tea-Sea-Pea*
+#### Jeremy Stuart
+- Infrastructure developer
+- Developer of the challenge *Tea-Sea-Pea*
+
+# Other contributors
+#### Diyaa Alkanakre
+- Helped to audit our network infrastructure and security
+#### Dan Sabourov & Fam Ghaly
+- Demoed initial iterations of the infrastructure
+- Helped test OpenVPN configurations
+
+
 # What is an attack-defence CTF
 
 > [!Tip]
