@@ -11,7 +11,7 @@ date: 2024-05-11
 # Introduction
 Hello! My name is James Lowther, and I'm a cloud infrastructure developer with (at the time of this post) 3 years of professional experience managing cloud resources in AWS. 
 
-About 8 months ago, me and a group of friends decided to take a stab at developing our own attack-defence CTF. For me, this was something far more complicated than anything I had done before. Many of us on the team have previous experience hosting jeopardy-style CTFs before, but the dynamic nature of A/D CTFs was daunting. Nevertheless, we started development in September of 2023 and held the first iteration of **Pls, I Want In** on May 11th, 2024.
+About 8 months ago, me and a group of friends decided to take a stab at developing our own attack-defence CTF. For me, this was something far more complicated than anything I had done before. Many of us on the organizing team have previous experience hosting jeopardy-style CTFs before, but the dynamic nature of A/D CTFs was daunting. Nevertheless, we started development in September of 2023 and, after 8 months of hard work, held the first iteration of **Pls, I Want In** on May 11th, 2024.
 
 This post will outline the successes and challenges we faced developing **Pls, I Want In**, while diving deep into the technical nitty-gritty that we had to learn to run the competition.
 
@@ -121,7 +121,7 @@ This uWSGI process created a Unix socket that was reverse-proxied with nginx. To
 ### Database
 The database we used was a simple PostgreSQL instance running under Docker. To configure the database users and permissions we heavily referenced the database roles from the FAUST [ctf-gameserver-ansible](https://github.com/fausecteam/ctf-gameserver-ansible) repository.
 
-Every 5 minutes we took a backup of the database, in case we needed to recover after a critical failure.
+Every 5 minutes we took a backup of the database, in case we needed to recover from a critical failure.
 ### Caching
 The Django application was configured to use memcached as its caching backend. The backend we initially chose was `PyLibMCCache`, but we started seeing a large number of 500 errors even with a tiny amount of traffic. We ran a load test and compared it with the `PyMemcacheCache` backend.
 
@@ -226,7 +226,7 @@ The router is one of the most critical pieces of infrastructure for an A/D CTF. 
 4. Acts as a central point for monitoring.
 
 ## Load balancing
-Load balancing the router was something I really wanted to do because it gave us lots of flexibility to make changes to our infrastructure during the competition without causing major downtime.
+Load balancing the router was something I really wanted to do because it gave us lots of flexibility to make changes to our infrastructure during the competition without causing major downtime. If a router server failed, we wanted the game to continue to run without noticeable impact.
 
 To do this, we used an AWS gateway load balancer (GWLB), and AWS PrivateLink endpoints. PrivateLink allowed us to create gateway load balancer endpoints (GWLBE) in the two VPCs, which could then be set as the destination for inter-team packets in the route tables for each subnet. The GWLBEs would then send these packets to the gateway load balancer, which would encapsulate the packet in the GENEVE protocol and send it to a target group on UDP port 6081.
 
@@ -419,6 +419,25 @@ The vulnboxes are the servers that teams are given full root access to. They con
 ## Vulnbox workflow
 The vulnbox was one of the main pieces of infrastructure that were fully pipelined to the point where we created golden AMIs. In a separate repo, we created a GitHub Actions workflow that would kick off a Packer build using the `amazon-ebs` builder. This would create a temporary EC2 server, provision it using an Ansible playbook, and then make an AMI (Amazon Machine Image). When we then created the full CTF infrastructure, we would create the vulnboxes dynamically using the latest AMI version, ensuring each team's vulnbox was identical.
 
+The builder in our Packer config took looked like this:
+```hcl
+build {
+  sources = [
+    "source.amazon-ebs.vulnbox"
+  ]
+
+  provisioner "ansible" {
+    user             = "admin"
+    playbook_file    = "../../ansible/vulnbox.yml"
+    extra_arguments  = ["--extra-vars", "var_file=${var.environment}.yml", "--scp-extra-args", "'-O'"] # Required for OpenSSH >=9.0
+    ansible_env_vars = ["ANSIBLE_FORCE_COLOR=1"]
+  }
+}
+```
+
+> [!Info] Environments
+> We would specify a `var_file` as an Ansible argument to overwrite the default variables in the roles. The variable files would contain environment-specific configuration values. This let us easily make AMIs for different environments using the same Ansible code. 
+
 When creating the vulnbox in Terraform, we used cloud-init to dynamically set the password:
 ```hcl
 user_data = <<-EOF
@@ -455,7 +474,7 @@ checker:
 
 Our Ansible playbooks then had tasks to pull the required artifacts down from S3 to then be provisioned on the instance. For example, the vulnbox role would pull the challenge artifacts down, de-compress them, and run an `init.sh` script to initialize the service with Docker Compose. The checker roles would pull the checker artifact, install the apt/pip packages, and start the checker service.
 
-This workflow made it very flexible when developing challenges. We wanted the CTF infrastructure to be service-agnostic. To create a new service, all someone would need to do is create a new repo off of the template repo, add their code, and know it would work with the CTF infrastructure.
+This workflow made it very flexible when developing challenges. We wanted the CTF infrastructure to be service-agnostic. To create a new service, all someone would need to do is create a new repo off of the template repo, add their code, and know it would integrate with the CTF infrastructure.
 
 # Automation
 Automation, automation, and more automation. Our full automation of all parts of the CTF was one of the main drivers of our success. Doing things manually becomes tedious and introduces human error. By allowing us to easily create and destroy the entire CTF infrastructure, we could develop and iterate at a much faster pace.
@@ -463,7 +482,7 @@ Automation, automation, and more automation. Our full automation of all parts of
 All of the AWS resources were fully managed through Terraform modules. All of the VPCs, subnets, servers, security groups, peering connections, EFS shares, etc., were all written using Terraform.
 
 > [!Success] Deployments
-> During our development, we used our automation to create and destroy the infrastructure 68 times. Without automation, this would not have been possible.
+> During our development, we used our automation to create and destroy the infrastructure **68 times**. Without automation, this would not have been possible, and our development would have been slower.
 
 ## Terraform
 For deployment, we used Terraform in conjunction with [Terragrunt](https://terragrunt.gruntwork.io/). I like Terragrunt, because it dramatically simplifies managing remote state. All state was stored in S3, with DynamoDB used as a state lock. We used the dependency feature of Terragrunt to glue module inputs/outputs together. This approach lets us have a separate state file for each module, instead of one massive state file for all resources.
@@ -513,6 +532,10 @@ Deploying infrastructure is only half the battle. The other half is ensuring tha
 ## Metrics
 In Prometheus, we used `ec2_sd_configs` to dynamically configure scrape targets, meaning we could scale our resources and be confident they would be monitored. Every server was running [node-exporter](https://github.com/prometheus/node_exporter) to provide the majority of our metrics. The router was also running [tc_exporter](https://github.com/fbegyn/tc_exporter) to provide metrics about our bandwidth limiting with TC.
 
+> [!Warning] VPN interfaces
+> By default, node-exporter will bind itself to all interfaces. This means if you run it on the VPN server, it will be bound to all of the `tun` interfaces created by OpenVPN. This can expose your metrics to teams. To fix this, we configured node-exporter to only bind was to the interface that was behind a security group.
+
+
 We used a number of pre-built node exporter dashboards in Grafana, such as [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/), to help us visualize the health of our servers. We built a custom dashboard using the metrics provided by the game server, to monitor how well the game server services were running.
 
 ### Game server dashboard
@@ -561,22 +584,25 @@ The lesson learned: **Always check your quotas in cloud environments!**
 ## Screenshots
 Here are some screenshots of the services and scoreboards from the CTF:
 
+### Game server
 ![[Pasted image 20240519121502.png]]
 
 ![[Pasted image 20240519121534.png]]
 
 ![[Pasted image 20240519121540.png]]
 
+### Services
+#### secrets-pls
 ![[Pasted image 20240519121558.png]]
-
+#### Tea-Sea-Pea
 ![[Pasted image 20240519121604.png]]
-
+#### Pilot
 ![[Pasted image 20240519121615.png]]
-
+#### Teliart
 ![[Pasted image 20240519121635.png]]
 
 # Improvements
-If I were to run this again I would make the following improvements:
+If we were to run this again I would propose we make the following improvements:
 1. Create AMIs for all EC2s.
 	- The majority of the time it took to deploy the CTF was spent provisioning the servers with Ansible.
 	- By creating AMIs, the servers could start pre-configured.
@@ -604,11 +630,11 @@ If I were to run this again I would make the following improvements:
 10. Add fault tolerance to the database instances.
 	- If a database node fails, the game should go on.
 
-Lots to do... so little time.
+So much to do... so little time.
 
 # Conclusion
 Overall, **Pls, I Want In** 2024 was a success. I learned a lot about how to build medium-scale applications in AWS, automation, pipelining, and working with a team. This was one of the most complicated and dynamic projects I have ever worked on, and it allowed me the opportunity to learn a tonne and improve my skills with cloud technologies.
 
-I wanted to thank all of the competitors for participating and being so encouraging. It was your support that made all of our hard work worth it. Thank you.
+I wanted to thank all of the competitors for participating and being so encouraging. It was your support that made all of our hard work worth it. I also want to thank the rest of **Pls, I Want In** organizing team, as the competition would not have existed without the work you put in. Thank you.
 
 ![[sweater.webp]]
