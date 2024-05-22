@@ -349,7 +349,7 @@ iptables -t mangle -A PREROUTING -p tcp --dport $PORT -d '10.32.0.0/16' -j TPROX
 ```
 
 ## Firewall
-We split the game, into three distinct parts:
+We split the game into three distinct parts:
 1. Before network closed
 2. Network closed
 3. Network open
