@@ -286,7 +286,7 @@ iptables -t mangle -A POSTROUTING -p tcp -d '10.32.0.0/32' -o ens6 -j TTL --ttl-
 ```
 
 ### HAProxy
-Our HAProxy configuration was directly inspired from [this talk](https://www.haproxy.com/user-spotlight-series/preventing-traffic-fingerprinting-in-capture-the-flag-competitions) by Felix Dreissig and Simon Ruderich from the FAUST CTF team. It's well worth a watch.
+Our HAProxy configuration was directly inspired from [this talk from HAProxyConf 2022](https://www.haproxy.com/user-spotlight-series/preventing-traffic-fingerprinting-in-capture-the-flag-competitions) by Felix Dreissig and Simon Ruderich of the FAUST CTF t21eam. It's well worth a watch.
 
 We used HAProxy to act as a transparent proxy for HTTP traffic. A `TPROXY` iptables rule would route packets destined for HTTP services transparently to the HAProxy service, which would then strip out any non-essential headers. We would then add our own header, `X-Pls-Proxied: True`, to identify to teams that we had intercepted the request.
 
