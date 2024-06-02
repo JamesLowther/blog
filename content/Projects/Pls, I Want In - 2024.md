@@ -275,7 +275,7 @@ Network traffic must be anonymized for the game to run smoothly. This is primari
 If a team can identify the checker, they could easily add a firewall on their vulnbox to only allow traffic from that IP source. This would mean the checker would successfully verify the service as working, but no other team would be able to exploit it. This is against the point of the game.
 
 ### MASQ
-To solve this, we used a simple `MASQUERADE` rule in iptables. This ensured that all traffic appeared to be coming from a single source, i.e. the router's IP. We also added a mangle rule to set the TTL of the packet to 30, ensuring that differences in hops wouldn't give away a packet's origin.
+To help anonymize traffic, we used a simple `MASQUERADE` rule in iptables. This ensured that all traffic appeared to be coming from a single source, i.e. the router's IP. We also added a mangle rule to set the TTL of the packet to 30, ensuring that differences in hops wouldn't give away a packet's origin.
 
 ```shell
 # MASQ
