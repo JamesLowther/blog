@@ -275,7 +275,7 @@ Network traffic must be anonymized for the game to run smoothly. This is primari
 If a team can identify the checker, they could easily add a firewall on their vulnbox to only allow traffic from that IP source. This would mean the checker would successfully verify the service as working, but no other team would be able to exploit it. This is against the point of the game.
 
 ### MASQ
-To solve this, we used a simple `MASQUERADE` rule in iptables to apply an `SNAT` to the outgoing traffic. This ensured that all traffic appeared to be coming from a single source, i.e. the router's IP. We also added a mangle rule to set the TTL of the packet to 30, ensuring that differences in hops wouldn't give away a packet's origin.
+To help anonymize traffic, we used a simple `MASQUERADE` rule in iptables. This ensured that all traffic appeared to be coming from a single source, i.e. the router's IP. We also added a mangle rule to set the TTL of the packet to 30, ensuring that differences in hops wouldn't give away a packet's origin.
 
 ```shell
 # MASQ
@@ -286,6 +286,8 @@ iptables -t mangle -A POSTROUTING -p tcp -d '10.32.0.0/32' -o ens6 -j TTL --ttl-
 ```
 
 ### HAProxy
+Our HAProxy configuration was directly inspired from [this talk](https://www.haproxy.com/user-spotlight-series/preventing-traffic-fingerprinting-in-capture-the-flag-competitions) by Felix Dreissig and Simon Ruderich from the FAUST CTF team. It's well worth a watch.
+
 We used HAProxy to act as a transparent proxy for HTTP traffic. A `TPROXY` iptables rule would route packets destined for HTTP services transparently to the HAProxy service, which would then strip out any non-essential headers. We would then add our own header, `X-Pls-Proxied: True`, to identify to teams that we had intercepted the request.
 
 **Before:**
