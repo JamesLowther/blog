@@ -9,7 +9,7 @@ date: 2024-05-11
 
 ---
 # Introduction
-Hello! My name is James Lowther, and I'm a cloud infrastructure developer with (at the time of this post) 3 years of professional experience managing cloud resources in AWS. 
+Hello! My name is James Lowther, and I'm a cloud infrastructure developer with (at the time of this post) 3 years of professional experience managing cloud resources in AWS.
 
 About 8 months ago, me and a group of friends decided to take a stab at developing our own attack-defence CTF. For me, this was something far more complicated than anything I had done before. Many of us on the organizing team have previous experience hosting jeopardy-style CTFs before, but the dynamic nature of A/D CTFs was daunting. Nevertheless, we started development in September of 2023 and, after 8 months of hard work, held the first iteration of **Pls, I Want In** on May 11th, 2024.
 
@@ -54,7 +54,7 @@ What's important to understand is that each team's vulnbox is identical. This me
 ## Ticks
 The game runs on intervals known as "ticks", which are 2 minutes long. Every tick, several tasks are run by the game server, such as updating the score, checking SLA, and inserting flags into services.
 ## Points
-Points are calculated in one of three ways: **attack**, **defence**, and **SLA**. 
+Points are calculated in one of three ways: **attack**, **defence**, and **SLA**.
 ### Attack points
 Attack points are accumulated by stealing "flags" from other teams. Flags are just random strings of text that are valid for gaining points. Once per game tick, new, unique, flags are inserted into each team's services by the game server. By exploiting vulnerabilities, teams can steal these flags and submit them for points.
 ### Defence points
@@ -208,7 +208,7 @@ To ensure that multiple teams could connect using the same client config, we nee
 
 > [!Info] VPN services
 > Each team had its own OpenVPN service running on each VPN server, with its own interface. For example, team 7 had an OpenVPN service running on each VPN server that used `tun7` as its interface. This was required to ensure that the third octet of each team's VPN IP matched their net number.
-> 
+>
 > It also made it easier to see how much traffic each team was sending on the VPN, as we could just look at the amount of traffic sent on a specific interface.
 ## Scaling & load balancing
 It was important that an OpenVPN server could fail completely and the game would still run. This drove us to figure out how to load balance teams across multiple OpenVPN instances, allowing us to scale out dynamically if our CPU load got too high. It also added fault tolerance to the VPN, allowing us to completely lose a server without impacting the game.
@@ -241,7 +241,7 @@ To ensure that we have identical OpenVPN configs on each server we used a AWS El
 
 > [!Success]
 > With this implementation, we could load balance OpenVPN connections across multiple servers completely transparently to the end user. We could increase the number of servers to handle the increased load without having to manually shard connections.
-> 
+>
 > One improvement would be to add a network load balancer in front of our OpenVPN servers. This would reduce the number of public IPs required when scaling, as by default AWS limits the amount of EIPs on an account to just 5.
 # Router
 The router is one of the most critical pieces of infrastructure for an A/D CTF. All packets relating to the game must be sent through the router. The router does the following:
@@ -263,7 +263,7 @@ To handle these packets, we used an AWS-provided solution called [gwlbtun](https
 
 > [!Success]
 > With this solution, we could scale the router horizontally to support any increase in load. We weren't limited to vertical scaling and didn't have a single point of failure. Because packet flows are distributed equally between routers in the target group, if one of our routers failed, or if we needed to restart it for maintenance, the impact on the game would be minimal.
-> 
+>
 > I was incredibly proud of this solution because it added fault tolerance to the infrastructure that is traditionally very static.
 
 ## Anonymizing traffic
@@ -286,7 +286,7 @@ iptables -t mangle -A POSTROUTING -p tcp -d '10.32.0.0/32' -o ens6 -j TTL --ttl-
 ```
 
 ### HAProxy
-Our HAProxy configuration was directly inspired from [this talk from HAProxyConf 2022](https://www.haproxy.com/user-spotlight-series/preventing-traffic-fingerprinting-in-capture-the-flag-competitions) by Felix Dreissig and Simon Ruderich of the FAUST CTF t21eam. It's well worth a watch.
+Our HAProxy configuration was directly inspired from [this talk from HAProxyConf 2022](https://www.haproxy.com/user-spotlight-series/preventing-traffic-fingerprinting-in-capture-the-flag-competitions) by Felix Dreissig and Simon Ruderich of the FAUST CTF team. It's well worth a watch.
 
 We used HAProxy to act as a transparent proxy for HTTP traffic. A `TPROXY` iptables rule would route packets destined for HTTP services transparently to the HAProxy service, which would then strip out any non-essential headers. We would then add our own header, `X-Pls-Proxied: True`, to identify to teams that we had intercepted the request.
 
@@ -388,12 +388,12 @@ We originally tried to limit bandwidth using an iptables module called `hashlimi
 iptables -A FORWARD -m hashlimit -m tcp -p tcp --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 10/sec --hashlimit-burst 2 --hashlimit-name pktlimit -j DROP
 ```
 
-This sort of worked, but was very inconsistent in limiting the throughput. [This blog post](http://tlfabian.blogspot.com/2014/06/how-does-iptables-hashlimit-module-work.html) does a great job of explaining the problem we faced. The hashlimit modules works in a binary fashion in that it will either allow or drop the packet. This, combined with the robustness of TCP, makes it very difficult to fine-tune the bandwidth. 
+This sort of worked, but was very inconsistent in limiting the throughput. [This blog post](http://tlfabian.blogspot.com/2014/06/how-does-iptables-hashlimit-module-work.html) does a great job of explaining the problem we faced. The hashlimit modules works in a binary fashion in that it will either allow or drop the packet. This, combined with the robustness of TCP, makes it very difficult to fine-tune the bandwidth.
 
 ### TC
 TC (Traffic Control) is the solution we ultimately ended up going with. TC works by shaping traffic by using queues (qdiscs), which will delay packet transmission instead of just dropping the packets.
 
-We used a [HTB (hierarchy token bucket)](https://www.man7.org/linux/man-pages/man8/tc-htb.8.html) qdisc with a class for each team, specifying the bandwidth limit to be 50mbit/s. We then used filters to classify packets into classes based on their third-octet net number. We used a [SFQ (stochastic fairness queueing)](https://www.man7.org/linux/man-pages/man8/tc-sfq.8.html) qdisc to ensure that bandwidth between each team's clients was evenly distributed. 
+We used a [HTB (hierarchy token bucket)](https://www.man7.org/linux/man-pages/man8/tc-htb.8.html) qdisc with a class for each team, specifying the bandwidth limit to be 50mbit/s. We then used filters to classify packets into classes based on their third-octet net number. We used a [SFQ (stochastic fairness queueing)](https://www.man7.org/linux/man-pages/man8/tc-sfq.8.html) qdisc to ensure that bandwidth between each team's clients was evenly distributed.
 
 > [!Success] Per-team limiting
 > What was cool about this solution is it allowed us to limit bandwidth not just per IP, but per team. This means that if the vulnbox was using 20mbit/s worth of bandwidth, then VPN clients for that team could share only 30mbit/s between themselves. This gave me peace of mind, as I could now calculate the worst-case egress charge from AWS and adjust the bandwidth accordingly.
@@ -464,7 +464,7 @@ build {
 ```
 
 > [!Info] Environments
-> We would specify a `var_file` as an Ansible argument to overwrite the default variables in the roles. The variable files would contain environment-specific configuration values. This let us easily make AMIs for different environments using the same Ansible code. 
+> We would specify a `var_file` as an Ansible argument to overwrite the default variables in the roles. The variable files would contain environment-specific configuration values. This let us easily make AMIs for different environments using the same Ansible code.
 
 When creating the vulnbox in Terraform, we used cloud-init to dynamically set the password:
 ```hcl
