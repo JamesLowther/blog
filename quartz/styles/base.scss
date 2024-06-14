@@ -485,6 +485,7 @@ ul.overflow:not(.mobile-only *),
 ol.overflow:not(.mobile-only *) {
   max-height: 400;
   overflow-y: auto;
+  position: relative;
 
   // clearfix
   content: "";
