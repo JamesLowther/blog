@@ -546,7 +546,7 @@ Deploying and destroying the CTF could be done at the click of a button. We used
 > [!Success] admin.ovpn
 > For convenience, we uploaded the administrative OpenVPN config file as an artifact on the GitHub Actions run. This config would bootstrap our access to the CTF services.
 
-This would send notifications to use through Discord using a simple webhook, making sure everyone was aware when a deployment was started, completed, canceled, or failed.
+This would send notifications to us through Discord using a simple webhook, making sure everyone was aware when a deployment was started, completed, canceled, or failed.
 
 ![[Pasted image 20240519111740.png]]
 
